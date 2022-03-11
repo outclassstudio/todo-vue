@@ -1,6 +1,9 @@
 <template>
   <div class="mainDiv">
-    <content-box v-bind:todoitem="todoitem"></content-box>
+    <div class="subDiv" v-for="el in todoitem" :key="el">
+      <content-box v-bind:element="el" @update="updateData"></content-box>
+    </div>
+    <!-- <content-box v-if="todoitem[0]" v-bind:todoitem="todoitem"></content-box> -->
   </div>
 </template>
 
@@ -12,6 +15,11 @@ export default {
   props: { todoitem: Array },
   components: {
     "content-box": ContentBox,
+  },
+  methods: {
+    updateData(data) {
+      this.$emit("editData", data);
+    },
   },
 };
 </script>
@@ -29,5 +37,9 @@ export default {
     rgba(0, 0, 0, 0.6) 0px 10px 10px -15px;
   border-radius: 10px;
   padding: 20px;
+}
+
+.subDiv {
+  display: flex;
 }
 </style>

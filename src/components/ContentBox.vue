@@ -1,8 +1,13 @@
 <template>
   <div class="itemboxDiv">
-    <div class="itemBox" @click="openModal">{{ todoitem[0].title }}</div>
+    <div class="itemBox" @click="openModal">{{ element.title }}</div>
     <button class="deleteBtn">삭제</button>
-    <content-modal v-if="modalopen" @close-modal="closeModal"></content-modal>
+    <content-modal
+      v-if="modalopen"
+      @close-modal="closeModal"
+      v-bind:element="element"
+      @update="dataUpdate"
+    ></content-modal>
   </div>
 </template>
 <script>
@@ -15,7 +20,7 @@ export default {
       modalopen: false,
     };
   },
-  props: { todoitem: Array },
+  props: { element: Object },
   components: {
     "content-modal": ContentModal,
   },
@@ -26,12 +31,15 @@ export default {
     closeModal() {
       this.modalopen = false;
     },
+    dataUpdate(data) {
+      this.$emit("update", data);
+    },
   },
 };
 </script>
 <style scoped>
 .itemboxDiv {
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +48,7 @@ export default {
 }
 
 .itemBox {
+  width: 100%;
   flex: 3 0 auto;
   padding: 5px;
   background-color: #8a8a8a;
