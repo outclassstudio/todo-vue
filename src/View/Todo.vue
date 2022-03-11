@@ -6,7 +6,12 @@
       <button @click="openModal">추가</button>
     </div>
     <background-box v-bind:todoitem="todoitem"></background-box>
-    <add-modal v-if="modalopen" @close-modal="closeModal"></add-modal>
+    <add-modal
+      v-if="modalopen"
+      @close-modal="closeModal"
+      @update="dataUpdate"
+      todoitem
+    ></add-modal>
     <!-- <div>{{ todoitem[0].title }}</div> -->
   </div>
 </template>
@@ -35,6 +40,9 @@ export default {
     },
     closeModal() {
       this.modalopen = false;
+    },
+    dataUpdate(data) {
+      this.$emit("update", data);
     },
   },
 };
