@@ -4,7 +4,7 @@
     <div class="title">
       <div>Progress</div>
     </div>
-    <background-box></background-box>
+    <background-box v-bind:todoitem="todofilter()"></background-box>
   </div>
 </template>
 
@@ -22,6 +22,15 @@ export default {
   components: {
     "background-box": BackGround,
     "header-global": Header,
+  },
+  props: { todoitem: Array },
+  methods: {
+    todofilter() {
+      let filtered = this.todoitem.filter((el) => {
+        return el.status === "Progress";
+      });
+      return filtered;
+    },
   },
 };
 </script>

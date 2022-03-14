@@ -13,6 +13,17 @@
         <div class="content-title">To-Do 내용</div>
         <div class="title-content-large">{{ element.contents.todo }}</div>
       </div>
+      <div
+        class="content-box"
+        v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
+      >
+        <div class="content-title">Progress 내용</div>
+        <div class="title-content-large">{{ element.contents.progress }}</div>
+      </div>
+      <div class="content-box" v-if="baseData.status === 'Done'">
+        <div class="content-title">Done 내용</div>
+        <div class="title-content-large">{{ element.contents.done }}</div>
+      </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
         <div class="title-content">{{ element.updatedDate }}</div>
@@ -39,6 +50,17 @@
         <div class="content-title">To-Do 내용</div>
         <textarea class="textarea" v-model="baseData.contents.todo" />
       </div>
+      <div
+        class="content-box"
+        v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
+      >
+        <div class="content-title">Progress 내용</div>
+        <textarea class="textarea" v-model="baseData.contents.progress" />
+      </div>
+      <div class="content-box" v-if="baseData.status === 'Done'">
+        <div class="content-title">Done 내용</div>
+        <textarea class="textarea" v-model="baseData.contents.done" />
+      </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
         <div class="title-content">{{ element.updatedDate }}</div>
@@ -58,14 +80,14 @@ export default {
       editMode: true,
       baseData: {
         id: this.element.id,
-        title: "",
+        title: this.element.title,
         contents: {
-          todo: "",
-          progress: "",
-          done: "",
+          todo: this.element.contents.todo,
+          progress: this.element.contents.progress,
+          done: this.element.contents.done,
         },
-        status: "",
-        updatedDate: "",
+        status: this.element.status,
+        updatedDate: this.element.updatedDate,
       },
     };
   },
@@ -145,6 +167,9 @@ export default {
 
 .text {
   height: 26px;
+  padding-left: 9px;
+  display: flex;
+  align-items: center;
 }
 
 .select {
@@ -157,8 +182,9 @@ export default {
 .textarea {
   border: 1px solid #c2c2c2;
   border-radius: 5px;
-  height: 58px;
+  height: 64px;
   white-space: normal;
+  /* font-weight: 500; */
 }
 
 .modal-btn {
@@ -171,11 +197,14 @@ export default {
 }
 
 .title-content {
+  display: flex;
+  align-items: center;
   height: 18px;
-  padding: 5px;
+  padding: 5px 5px 5px 9px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
   font-size: 13px;
+  letter-spacing: 0.1px;
 }
 
 .title-content-large {
@@ -183,5 +212,8 @@ export default {
   /* padding: 5px; */
   border: 1px solid #c2c2c2;
   border-radius: 5px;
+  font-size: 13px;
+  padding: 3px;
+  /* font-weight: 100; */
 }
 </style>
