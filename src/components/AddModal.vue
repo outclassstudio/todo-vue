@@ -17,6 +17,17 @@
         <div class="content-title">To-Do 내용</div>
         <textarea class="textarea" v-model="baseData.contents.todo" />
       </div>
+      <div
+        class="content-box"
+        v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
+      >
+        <div class="content-title">Progress 내용</div>
+        <textarea class="textarea" v-model="baseData.contents.progress" />
+      </div>
+      <div class="content-box" v-if="baseData.status === 'Done'">
+        <div class="content-title">Done 내용</div>
+        <textarea class="textarea" v-model="baseData.contents.done" />
+      </div>
       <div class="btn-wrapper">
         <button class="modal-btn" @click="closeModal">닫기</button>
         <button class="modal-btn" @click="editChange">저장</button>

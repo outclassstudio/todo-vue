@@ -5,14 +5,13 @@
       <div>To-Do Items</div>
       <button @click="openModal">추가</button>
     </div>
-    <background-box v-bind:todoitem="todoitem"></background-box>
+    <background-box v-bind:todoitem="todofilter()"></background-box>
     <add-modal
       v-if="modalopen"
       @close-modal="closeModal"
       @update="dataUpdate"
       todoitem
     ></add-modal>
-    <!-- <div>{{ todoitem[0].title }}</div> -->
   </div>
 </template>
 
@@ -43,6 +42,12 @@ export default {
     },
     dataUpdate(data) {
       this.$emit("update", data);
+    },
+    todofilter() {
+      let filtered = this.todoitem.filter((el) => {
+        return el.status === "To-Do";
+      });
+      return filtered;
     },
   },
 };
