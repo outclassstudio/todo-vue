@@ -7,6 +7,7 @@
     <background-box
       v-bind:todoitem="todofilter()"
       @edit-data="editData"
+      @delete-data="deleteData"
     ></background-box>
   </div>
 </template>
@@ -37,11 +38,14 @@ export default {
     editData(data) {
       this.$emit("edit-data", data);
     },
+    deleteData(data) {
+      this.$emit("delete-data", data);
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .to-do {
   display: flex;
   flex-direction: column;
@@ -50,10 +54,10 @@ export default {
 }
 
 .title {
-  width: 240px;
+  width: 320px;
   height: 25px;
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   font-size: 20px;
   font-weight: bold;
   margin: 10px 0px 10px 0px;

@@ -1,10 +1,12 @@
 <template>
   <div class="mainDiv">
+    <div class="summary">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
       <content-box
         v-bind:element="el"
         @add-data="addData"
         @edit-data="editData"
+        @delete-data="deleteData"
       ></content-box>
     </div>
     <!-- <content-box v-if="todoitem[0]" v-bind:todoitem="todoitem"></content-box> -->
@@ -16,6 +18,11 @@ import ContentBox from "./ContentBox";
 
 export default {
   name: "Background-Box",
+  data: function () {
+    return {
+      topTitle: { ToDo: "할 일", Progress: "진행 중", Done: "완료" },
+    };
+  },
   props: { todoitem: Array },
   components: {
     "content-box": ContentBox,
@@ -27,6 +34,9 @@ export default {
     editData(data) {
       this.$emit("edit-data", data);
     },
+    deleteData(data) {
+      this.$emit("delete-data", data);
+    },
   },
 };
 </script>
@@ -36,17 +46,28 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
-  width: 200px;
-  height: 200px;
+  background-color: #f6f6f6;
+  width: 300px;
+  min-height: 200px;
   border: 1px soild #bbbbbb;
-  box-shadow: rgba(0, 0, 0, 0.6) 0px 10px 10px -15px,
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px -5px,
     rgba(0, 0, 0, 0.6) 0px 10px 10px -15px;
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 5px;
+  padding: 10px;
+  gap: 5px;
 }
 
 .subDiv {
   display: flex;
+}
+
+.summary {
+  display: flex;
+  justify-content: left;
+  padding-left: 6px;
+  margin-bottom: 10px;
+  width: 100%;
+  font-size: 13px;
+  color: #646464;
 }
 </style>

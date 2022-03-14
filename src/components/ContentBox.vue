@@ -1,11 +1,20 @@
 <template>
   <div class="itemboxDiv">
-    <div class="itemBox" @click="openModal">{{ element.title }}</div>
-    <button class="deleteBtn">삭제</button>
+    <div class="itemBox" @click="openModal">
+      <div class="issue-title">{{ element.title }}</div>
+      <div class="date">수정날짜 : {{ element.updatedDate.split(" ")[0] }}</div>
+    </div>
+    <button
+      class="deleteBtn"
+      @click="deleteData"
+      v-if="element.status !== 'Done'"
+    >
+      삭제
+    </button>
     <content-modal
       v-if="modalopen"
-      @close-modal="closeModal"
       v-bind:element="element"
+      @close-modal="closeModal"
       @edit-data="editData"
     ></content-modal>
   </div>
@@ -34,6 +43,9 @@ export default {
     editData(data) {
       this.$emit("edit-data", data);
     },
+    deleteData() {
+      this.$emit("delete-data", this.element.id);
+    },
   },
 };
 </script>
@@ -48,13 +60,36 @@ export default {
 }
 
 .itemBox {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  min-height: 50px;
+  width: 230px;
   flex: 3 0 auto;
-  padding: 5px;
-  background-color: #8a8a8a;
+  padding: 10px;
+  background-color: white;
   border-radius: 5px;
-  color: white;
+  border: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #505050;
   cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 0px 0px;
+  gap: 10px;
+}
+
+.itemBox:hover {
+  background-color: #f0f0f0;
+}
+
+.issue-title {
+  word-wrap: break-word;
+}
+
+.date {
+  font-size: 11px;
+  color: #999999;
+  font-weight: 100;
 }
 
 .deleteBtn {

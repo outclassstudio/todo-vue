@@ -8,7 +8,7 @@
       <div class="content-box">
         <div class="content-title">진행상태</div>
         <select class="select" v-model="baseData.status">
-          <option>To-Do</option>
+          <option>ToDo</option>
           <option>Progress</option>
           <option>Done</option>
         </select>
