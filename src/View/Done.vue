@@ -4,7 +4,10 @@
     <div class="title">
       <div>Done</div>
     </div>
-    <background-box v-bind:todoitem="todofilter()"></background-box>
+    <background-box
+      v-bind:todoitem="todofilter()"
+      @edit-data="editData"
+    ></background-box>
   </div>
 </template>
 
@@ -30,6 +33,9 @@ export default {
         return el.status === "Done";
       });
       return filtered;
+    },
+    editData(data) {
+      this.$emit("edit-data", data);
     },
   },
 };

@@ -3,8 +3,7 @@
     <router-view
       v-bind:todoitem="item"
       @add-data="addData"
-      @update="addData"
-      @editData="editData"
+      @edit-data="editData"
     ></router-view>
   </div>
 </template>
@@ -14,19 +13,7 @@ export default {
   name: "App",
   data: function () {
     return {
-      item: [
-        // {
-        //   id: 0,
-        //   title: "임시",
-        //   contents: {
-        //     todo: "투두투두",
-        //     progress: "",
-        //     done: "",
-        //   },
-        //   status: "todo",
-        //   updatedDate: "2022-03-11",
-        // },
-      ],
+      item: [],
     };
   },
   methods: {
@@ -34,17 +21,18 @@ export default {
       this.item.push(data);
       alert("저장완료!");
     },
-    edittData(data) {
+    editData(data) {
       //해당 데이터를 삭제후 업데이트
-      //splice사용
       let filtered = this.item.filter((el) => {
-        el.id !== data.id;
+        return el.id !== data.id;
       });
+
       filtered.push(data);
       filtered.sort((a, b) => {
         return a.id - b.id;
       });
       this.item = filtered;
+      alert("수정완료!");
     },
   },
 };

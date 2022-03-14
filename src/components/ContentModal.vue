@@ -30,7 +30,7 @@
       </div>
       <div class="btn-wrapper">
         <button class="modal-btn" @click="closeModal">닫기</button>
-        <button class="modal-btn" @click="editChange">수정</button>
+        <button class="modal-btn" @click="modeChange">수정</button>
       </div>
     </div>
     <div class="modal-content" v-else>
@@ -48,14 +48,28 @@
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.todo" />
+        <textarea
+          class="textarea"
+          v-model="baseData.contents.todo"
+          v-if="baseData.status === 'To-Do'"
+        />
+        <div class="title-content-large" v-if="baseData.status !== 'To-Do'">
+          {{ element.contents.todo }}
+        </div>
       </div>
       <div
         class="content-box"
         v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
       >
         <div class="content-title">Progress 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.progress" />
+        <textarea
+          class="textarea"
+          v-model="baseData.contents.progress"
+          v-if="baseData.status === 'Progress'"
+        />
+        <div class="title-content-large" v-if="baseData.status !== 'Progress'">
+          {{ element.contents.progress }}
+        </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
@@ -67,7 +81,10 @@
       </div>
       <div class="btn-wrapper">
         <button class="modal-btn" @click="closeModal">닫기</button>
-        <button class="modal-btn" @click="editChange">저장</button>
+        <div>
+          <button class="modal-btn" @click="modeChange">취소</button>
+          <button class="modal-btn" @click="editData">저장</button>
+        </div>
       </div>
     </div>
   </div>
@@ -96,14 +113,18 @@ export default {
     closeModal() {
       this.$emit("close-modal", false);
     },
-    editChange() {
-      if (this.editMode) {
-        this.editMode = false;
+    modeChange() {
+      if (this.baseData.status === "Done") {
+        alert("완료된 태스크는 수정할 수 없습니다");
       } else {
-        this.editMode = true;
+        if (this.editMode) {
+          this.editMode = false;
+        } else {
+          this.editMode = true;
+        }
       }
     },
-    updateDate() {
+    editData() {
       let currentDate = new Date();
       let year = currentDate.getFullYear();
       let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
@@ -112,11 +133,10 @@ export default {
       let minutes = ("0" + currentDate.getMinutes()).slice(-2);
       let seconds = ("0" + currentDate.getSeconds()).slice(-2);
       let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
       this.baseData.updatedDate = dateString;
 
-      this.$emit("close-modal", false);
-      this.$emit("update", this.baseData);
+      this.$emit("edit-data", this.baseData);
+      this.modeChange();
     },
   },
 };
