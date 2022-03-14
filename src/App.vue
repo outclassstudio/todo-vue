@@ -4,6 +4,7 @@
       v-bind:todoitem="item"
       @add-data="addData"
       @edit-data="editData"
+      @delete-data="deleteData"
     ></router-view>
   </div>
 </template>
@@ -33,6 +34,13 @@ export default {
       });
       this.item = filtered;
       alert("수정완료!");
+    },
+    deleteData(data) {
+      let filtered = this.item.filter((el) => {
+        return el.id !== data;
+      });
+      this.item = filtered;
+      alert("삭제완료!");
     },
   },
 };

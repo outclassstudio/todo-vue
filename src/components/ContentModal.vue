@@ -41,7 +41,7 @@
       <div class="content-box">
         <div class="content-title">진행상태</div>
         <select class="select" v-model="baseData.status">
-          <option>To-Do</option>
+          <option>ToDo</option>
           <option>Progress</option>
           <option>Done</option>
         </select>
@@ -51,9 +51,9 @@
         <textarea
           class="textarea"
           v-model="baseData.contents.todo"
-          v-if="baseData.status === 'To-Do'"
+          v-if="baseData.status === 'ToDo'"
         />
-        <div class="title-content-large" v-if="baseData.status !== 'To-Do'">
+        <div class="title-content-large" v-if="baseData.status !== 'ToDo'">
           {{ element.contents.todo }}
         </div>
       </div>
@@ -86,15 +86,18 @@
           <button class="modal-btn" @click="editData">저장</button>
         </div>
       </div>
+      <!-- <div class="error" v-if="errorMsg">변경된 내용이 없습니다.</div> -->
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "content-modal",
   data: function () {
     return {
       editMode: true,
+      errorMsg: false,
       baseData: {
         id: this.element.id,
         title: this.element.title,
@@ -135,8 +138,20 @@ export default {
       let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       this.baseData.updatedDate = dateString;
 
-      this.$emit("edit-data", this.baseData);
-      this.modeChange();
+      let currentStatus = this.element.status.toLowerCase();
+
+      if (
+        this.element.title === this.baseData.title &&
+        this.element.contents[currentStatus] ===
+          this.baseData.contents[currentStatus] &&
+        this.element.status === this.baseData.status
+      ) {
+        alert("변경된 내용이 없습니다.");
+        // this.errorMsg = true;
+      } else {
+        this.$emit("edit-data", this.baseData);
+        this.modeChange();
+      }
     },
   },
 };
@@ -235,5 +250,12 @@ export default {
   font-size: 13px;
   padding: 3px;
   /* font-weight: 100; */
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  color: #dd0808;
 }
 </style>
