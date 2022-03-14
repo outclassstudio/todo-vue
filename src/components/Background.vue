@@ -1,7 +1,11 @@
 <template>
   <div class="mainDiv">
     <div class="subDiv" v-for="el in todoitem" :key="el">
-      <content-box v-bind:element="el" @update="updateData"></content-box>
+      <content-box
+        v-bind:element="el"
+        @add-data="addData"
+        @edit-data="editData"
+      ></content-box>
     </div>
     <!-- <content-box v-if="todoitem[0]" v-bind:todoitem="todoitem"></content-box> -->
   </div>
@@ -17,8 +21,11 @@ export default {
     "content-box": ContentBox,
   },
   methods: {
-    updateData(data) {
-      this.$emit("editData", data);
+    addData(data) {
+      this.$emit("add-data", data);
+    },
+    editData(data) {
+      this.$emit("edit-data", data);
     },
   },
 };

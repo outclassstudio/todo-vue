@@ -6,7 +6,7 @@
       v-if="modalopen"
       @close-modal="closeModal"
       v-bind:element="element"
-      @update="dataUpdate"
+      @edit-data="editData"
     ></content-modal>
   </div>
 </template>
@@ -31,8 +31,8 @@ export default {
     closeModal() {
       this.modalopen = false;
     },
-    dataUpdate(data) {
-      this.$emit("update", data);
+    editData(data) {
+      this.$emit("edit-data", data);
     },
   },
 };
