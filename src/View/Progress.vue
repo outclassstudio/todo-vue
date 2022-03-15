@@ -51,7 +51,7 @@ export default {
 }
 
 .title {
-  width: 320px;
+  width: 300px;
   height: 25px;
   display: flex;
   justify-content: left;

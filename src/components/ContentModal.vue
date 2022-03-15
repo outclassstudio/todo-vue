@@ -33,8 +33,8 @@
         <div class="title-content">{{ element.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
-        <button class="modal-btn" @click="closeModal">닫기</button>
-        <button class="modal-btn" @click="modeChange">수정</button>
+        <div class="modal-btn" @click="closeModal">닫기</div>
+        <div class="modal-btn save-btn" @click="editModeOn">수정</div>
       </div>
     </div>
     <div class="modal-content" v-else>
@@ -88,10 +88,10 @@
         <div class="title-content">{{ element.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
-        <button class="modal-btn" @click="closeModal">닫기</button>
-        <div>
-          <button class="modal-btn" @click="modeChange">취소</button>
-          <button class="modal-btn" @click="editData">저장</button>
+        <div class="modal-btn" @click="closeModal">닫기</div>
+        <div class="btn-sub-wrapper">
+          <div class="modal-btn" @click="editModeOff">취소</div>
+          <div class="modal-btn save-btn" @click="editData">저장</div>
         </div>
       </div>
       <!-- <div class="error" v-if="errorMsg">변경된 내용이 없습니다.</div> -->
@@ -124,16 +124,16 @@ export default {
     closeModal() {
       this.$emit("close-modal", false);
     },
-    modeChange() {
+    editModeOn() {
       if (this.baseData.status === "Done") {
-        alert("완료된 태스크는 수정할 수 없습니다");
+        alert("완료된 이슈는 수정할 수 없습니다");
       } else {
-        if (this.editMode) {
-          this.editMode = false;
-        } else {
-          this.editMode = true;
-        }
+        this.editMode = false;
       }
+    },
+    editModeOff() {
+      this.editMode = true;
+      this.baseData.status = this.element.status;
     },
     editData() {
       let currentDate = new Date();
@@ -158,12 +158,12 @@ export default {
         // this.errorMsg = true;
       } else {
         this.$emit("edit-data", this.baseData);
-        this.modeChange();
       }
     },
   },
 };
 </script>
+
 <style scoped>
 .modal-bg {
   display: flex;
@@ -186,8 +186,7 @@ export default {
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 10px 10px -15px,
     rgba(0, 0, 0, 0.8) 0px -10px 10px -15px;
-  width: 350px;
-  /* height: 500px; */
+  width: 400px;
   padding: 30px;
   gap: 20px;
 }
@@ -250,13 +249,38 @@ export default {
   /* font-weight: 500; */
 }
 
-.modal-btn {
-  height: 30px;
-}
-
 .btn-wrapper {
   display: flex;
   justify-content: space-between;
+  margin: 5px 0px 5px 0px;
+}
+
+.btn-sub-wrapper {
+  display: flex;
+  gap: 3px;
+}
+
+.modal-btn {
+  width: 22px;
+  height: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  font-size: 11px;
+  border: 1px soild #797979;
+  border-radius: 3px;
+  background-color: #a0a0a0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.modal-btn:hover {
+  background-color: #b10000;
+}
+
+.save-btn {
+  background-color: #686868;
 }
 
 .title-content {

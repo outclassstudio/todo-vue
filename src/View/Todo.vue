@@ -1,7 +1,7 @@
 <template>
   <div class="to-do">
     <div class="title">
-      <div>To-Do Items</div>
+      <div>To Do List</div>
       <div class="add-btn" @click="openModal">이슈만들기</div>
     </div>
     <background-box
@@ -62,7 +62,6 @@ export default {
 
 <style scoped>
 .to-do {
-  /* width: 300px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,7 +69,7 @@ export default {
 }
 
 .title {
-  width: 320px;
+  width: 300px;
   height: 25px;
   display: flex;
   justify-content: space-between;

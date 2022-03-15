@@ -7,7 +7,12 @@
       </div>
       <div class="content-box">
         <div class="content-title">제목</div>
-        <input type="text" class="text" v-model="baseData.title" />
+        <input
+          type="text"
+          class="text"
+          v-model="baseData.title"
+          @change="errMsgChange"
+        />
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
@@ -33,9 +38,10 @@
         <textarea class="textarea" v-model="baseData.contents.done" />
       </div>
       <div class="btn-wrapper">
-        <button class="modal-btn" @click="closeModal">닫기</button>
-        <button class="modal-btn" @click="addData">저장</button>
+        <div class="modal-btn" @click="closeModal">닫기</div>
+        <div class="modal-btn save-btn" @click="addData">저장</div>
       </div>
+      <div class="error-msg" v-if="errorMsg">제목을 입력해주세요(필수)</div>
     </div>
   </div>
 </template>
@@ -56,6 +62,7 @@ export default {
         status: "",
         updatedDate: "",
       },
+      errorMsg: false,
     };
   },
   props: { modalopen: Boolean, todoitem: Array },
@@ -63,37 +70,43 @@ export default {
     closeModal() {
       this.$emit("close-modal", false);
     },
-    createData(e) {
-      e.target.value;
-    },
     addData() {
       //날짜 생성
-      let currentDate = new Date();
-      let year = currentDate.getFullYear();
-      let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-      let day = ("0" + currentDate.getDate()).slice(-2);
-      let hours = ("0" + currentDate.getHours()).slice(-2);
-      let minutes = ("0" + currentDate.getMinutes()).slice(-2);
-      let seconds = ("0" + currentDate.getSeconds()).slice(-2);
-      let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-      this.baseData.updatedDate = dateString;
-
-      //id생성
-      let idArray = [];
-      if (this.todoitem.length !== 0) {
-        this.todoitem.forEach((el) => {
-          idArray.push(el.id);
-        });
-        let newId = Math.max(...idArray) + 1;
-        this.baseData.id = newId;
+      if (this.baseData.title === "") {
+        this.errorMsg = true;
+        // alert("제목을 입력해주세요(필수)");
       } else {
-        this.baseData.id = 0;
-      }
+        let currentDate = new Date();
+        let year = currentDate.getFullYear();
+        let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+        let day = ("0" + currentDate.getDate()).slice(-2);
+        let hours = ("0" + currentDate.getHours()).slice(-2);
+        let minutes = ("0" + currentDate.getMinutes()).slice(-2);
+        let seconds = ("0" + currentDate.getSeconds()).slice(-2);
+        let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        this.baseData.updatedDate = dateString;
 
-      this.$emit("close-modal", false);
-      this.$emit("add-data", this.baseData);
+        //id생성
+        let idArray = [];
+        if (this.todoitem.length !== 0) {
+          this.todoitem.forEach((el) => {
+            idArray.push(el.id);
+          });
+          let newId = Math.max(...idArray) + 1;
+          this.baseData.id = newId;
+        } else {
+          this.baseData.id = 0;
+        }
+
+        this.$emit("close-modal", false);
+        this.$emit("add-data", this.baseData);
+      }
+    },
+    errMsgChange() {
+      this.errorMsg = false;
     },
   },
+  computed: {},
 };
 </script>
 
@@ -119,10 +132,10 @@ export default {
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 10px 10px -15px,
     rgba(0, 0, 0, 0.8) 0px -10px 10px -15px;
-  width: 350px;
-  /* height: 500px; */
+  width: 400px;
+  min-height: 400px;
   padding: 30px;
-  gap: 20px;
+  gap: 25px;
 }
 
 .modal-header {
@@ -180,11 +193,38 @@ export default {
 }
 
 .modal-btn {
-  height: 30px;
+  width: 22px;
+  height: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  font-size: 11px;
+  border: 1px soild #797979;
+  border-radius: 3px;
+  background-color: #a0a0a0;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.modal-btn:hover {
+  background-color: #b10000;
 }
 
 .btn-wrapper {
   display: flex;
   justify-content: space-between;
+  margin: 15px 0px 5px 0px;
+}
+
+.save-btn {
+  background-color: #686868;
+}
+
+.error-msg {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  color: #dd0808;
 }
 </style>

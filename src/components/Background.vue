@@ -9,8 +9,9 @@
         @delete-data="deleteData"
       ></content-box>
     </div>
-    <!-- <div class="add-box">+ 이슈만들기</div> -->
-    <!-- <div class="add-box">{{ $route }}</div> -->
+    <!-- <div class="add-box" v-if="statusGenerator()" @clic="openAddModal">
+      + 이슈 만들기
+    </div> -->
   </div>
 </template>
 
@@ -38,6 +39,20 @@ export default {
     deleteData(data) {
       this.$emit("delete-data", data);
     },
+    // statusGenerator() {
+    //   if (this.todoitem[0] !== null && this.todoitem[0] !== undefined) {
+    //     if (this.todoitem[0].status === "ToDo") {
+    //       return true;
+    //     } else {
+    //       return false;
+    //     }
+    //   } else {
+    //     return false;
+    //   }
+    // },
+    // openAddModal() {
+    //   this.$emit("opne-add-modal", true);
+    // },
   },
 };
 </script>
@@ -48,7 +63,7 @@ export default {
   flex-direction: column;
   align-items: center;
   background-color: #f6f6f6;
-  width: 300px;
+  width: 280px;
   min-height: 700px;
   border: 1px soild #bbbbbb;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px -5px,
@@ -76,7 +91,7 @@ export default {
   padding: 10px;
   font-size: 13px;
   color: #646464;
-  width: 280px;
+  width: 260px;
   display: flex;
   justify-content: left;
   border-radius: 5px;
