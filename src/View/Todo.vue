@@ -1,6 +1,5 @@
 <template>
   <div class="to-do">
-    <header-global></header-global>
     <div class="title">
       <div>To-Do Items</div>
       <div class="add-btn" @click="openModal">이슈만들기</div>
@@ -22,7 +21,6 @@
 <script>
 import BackGround from "../components/Background";
 import AddModal from "../components/AddModal.vue";
-import Header from "../components/Header.vue";
 
 export default {
   name: "To-Do",
@@ -35,7 +33,6 @@ export default {
   components: {
     "add-modal": AddModal,
     "background-box": BackGround,
-    "header-global": Header,
   },
   methods: {
     openModal() {

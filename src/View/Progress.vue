@@ -1,6 +1,5 @@
 <template>
   <div class="to-do">
-    <header-global></header-global>
     <div class="title">
       <div>Progress</div>
     </div>
@@ -14,7 +13,6 @@
 
 <script>
 import BackGround from "../components/Background";
-import Header from "../components/Header.vue";
 
 export default {
   name: "Progress-View",
@@ -25,7 +23,6 @@ export default {
   },
   components: {
     "background-box": BackGround,
-    "header-global": Header,
   },
   props: { todoitem: Array },
   methods: {
