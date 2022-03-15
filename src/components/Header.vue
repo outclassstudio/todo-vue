@@ -38,10 +38,6 @@ export default {
       pathDone: false,
     };
   },
-  // created() {
-  //   console.log("안되냐");
-  //   this.route = this.$route.path;
-  // },
 };
 </script>
 
@@ -55,14 +51,16 @@ export default {
   align-items: center;
   padding: 10px;
   margin-bottom: 25px;
-  /* justify-content: center; */
-  /* height: 500px; */
 }
 
 a {
   text-decoration: none;
   color: white;
   margin: 5px;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .logo {
