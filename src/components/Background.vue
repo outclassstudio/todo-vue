@@ -9,7 +9,8 @@
         @delete-data="deleteData"
       ></content-box>
     </div>
-    <!-- <content-box v-if="todoitem[0]" v-bind:todoitem="todoitem"></content-box> -->
+    <!-- <div class="add-box">+ 이슈만들기</div> -->
+    <!-- <div class="add-box">{{ $route }}</div> -->
   </div>
 </template>
 
@@ -48,7 +49,7 @@ export default {
   align-items: center;
   background-color: #f6f6f6;
   width: 300px;
-  min-height: 200px;
+  min-height: 700px;
   border: 1px soild #bbbbbb;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px -5px,
     rgba(0, 0, 0, 0.6) 0px 10px 10px -15px;
@@ -69,5 +70,20 @@ export default {
   width: 100%;
   font-size: 13px;
   color: #646464;
+}
+
+.add-box {
+  padding: 10px;
+  font-size: 13px;
+  color: #646464;
+  width: 280px;
+  display: flex;
+  justify-content: left;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-box:hover {
+  background-color: #64646420;
 }
 </style>

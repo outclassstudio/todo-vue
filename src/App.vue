@@ -1,5 +1,6 @@
 <template>
   <div>
+    <header-global></header-global>
     <router-view
       v-bind:todoitem="item"
       @add-data="addData"
@@ -10,12 +11,17 @@
 </template>
 
 <script>
+import Header from "./components/Header.vue";
+
 export default {
   name: "App",
   data: function () {
     return {
       item: [],
     };
+  },
+  components: {
+    "header-global": Header,
   },
   methods: {
     addData(data) {

@@ -1,6 +1,10 @@
 <template>
   <div class="modal-bg">
     <div class="modal-content">
+      <div class="modal-header">
+        <div class="header-title">연습용 프로젝트</div>
+        <div class="close-btn" @click="closeModal">X</div>
+      </div>
       <div class="content-box">
         <div class="content-title">제목</div>
         <input type="text" class="text" v-model="baseData.title" />
@@ -119,6 +123,26 @@ export default {
   /* height: 500px; */
   padding: 30px;
   gap: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-title {
+  font-size: 12px;
+  color: #a7a7a7;
+}
+
+.close-btn {
+  font-size: 12px;
+  color: #bbbbbb;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #6d6d6d;
 }
 
 .content-box {
