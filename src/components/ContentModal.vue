@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-bg">
+  <div class="modal-bg" @keyup.esc="closeModal" tabindex="0">
     <div class="modal-content" v-if="editMode">
       <div class="modal-header">
         <div class="header-title">연습용 프로젝트</div>
