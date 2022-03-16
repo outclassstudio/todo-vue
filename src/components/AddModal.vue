@@ -16,7 +16,11 @@
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
-        <select class="select" v-model="baseData.status">
+        <select
+          class="select"
+          v-model="baseData.status"
+          @change="statusErrMsgChange"
+        >
           <option>ToDo</option>
           <option>Progress</option>
           <option>Done</option>
@@ -41,7 +45,8 @@
         <div class="modal-btn" @click="closeModal">닫기</div>
         <div class="modal-btn save-btn" @click="addData">저장</div>
       </div>
-      <div class="error-msg" v-if="errorMsg">제목을 입력해주세요(필수)</div>
+      <div class="error-msg" v-if="errorMsg">제목을 입력해주세요</div>
+      <div class="error-msg" v-if="statusErrorMsg">진행상태를 선택해주세요</div>
     </div>
   </div>
 </template>
@@ -60,10 +65,11 @@ export default {
           progress: "",
           done: "",
         },
-        status: "",
+        status: "ToDo",
         updatedDate: "",
       },
       errorMsg: false,
+      statusErrorMsg: false,
     };
   },
 
@@ -80,6 +86,8 @@ export default {
       //*타이틀 없을 시 에러메시지 출력
       if (this.baseData.title === "") {
         this.errorMsg = true;
+      } else if (this.baseData.status === "") {
+        this.statusErrorMsg = true;
       } else {
         //*날짜생성
         let currentDate = new Date();
@@ -109,9 +117,12 @@ export default {
       }
     },
 
-    //에러메시지 출력을 위한 함수
+    //에러메시지 출력 중지 함수
     errMsgChange() {
       this.errorMsg = false;
+    },
+    statusErrMsgChange() {
+      this.statusErrorMsg = false;
     },
   },
 };
@@ -143,6 +154,7 @@ export default {
   min-height: 400px;
   padding: 30px;
   gap: 25px;
+  /* z-index: 1; */
 }
 
 .modal-header {
@@ -221,7 +233,7 @@ export default {
 .btn-wrapper {
   display: flex;
   justify-content: space-between;
-  margin: 15px 0px 5px 0px;
+  margin: 15px 0px 0px 0px;
 }
 
 .save-btn {
@@ -231,7 +243,7 @@ export default {
 .error-msg {
   display: flex;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   color: #dd0808;
 }
 </style>

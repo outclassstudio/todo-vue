@@ -160,7 +160,7 @@ export default {
       //*내용변경 테스트를 위한 키 설정
       let currentStatus = this.element.status.toLowerCase();
 
-      //*내용변경이 없을 때에 대한 테스트 로직
+      //*내용변경이 없을 때에 대한 로직
       if (
         this.element.title === this.baseData.title &&
         this.element.contents[currentStatus] ===
@@ -264,7 +264,8 @@ export default {
 .textarea {
   border: 1px solid #c2c2c2;
   border-radius: 5px;
-  height: 64px;
+  height: 62px;
+  padding: 10px;
   white-space: normal;
   /* font-weight: 500; */
 }
@@ -316,11 +317,11 @@ export default {
 
 .title-content-large {
   height: 62px;
-  /* padding: 5px; */
+  white-space: pre;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
   font-size: 13px;
-  padding: 3px;
+  padding: 10px;
   /* font-weight: 100; */
 }
 

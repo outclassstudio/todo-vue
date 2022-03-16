@@ -30,7 +30,7 @@ export default {
     //데이터 추가 함수
     addData(data) {
       this.item.push(data);
-      alert("저장완료!");
+      // alert("저장완료!");
     },
 
     //데이터 수정 함수
@@ -42,9 +42,9 @@ export default {
 
       //*수정된 데이터 푸시 후 정렬
       filtered.push(data);
-      filtered.sort((a, b) => {
-        return a.id - b.id;
-      });
+      // filtered.sort((a, b) => {
+      //   return a.id - b.id;
+      // });
 
       //*기존 데이터 업데이트
       this.item = filtered;
