@@ -49,6 +49,7 @@
 <script>
 export default {
   name: "add-modal",
+
   data: function () {
     return {
       baseData: {
@@ -65,17 +66,22 @@ export default {
       errorMsg: false,
     };
   },
+
   props: { modalopen: Boolean, todoitem: Array },
+
   methods: {
+    //모달창 닫는 함수
     closeModal() {
       this.$emit("close-modal", false);
     },
+
+    //데이터추가함수
     addData() {
-      //날짜 생성
+      //*타이틀 없을 시 에러메시지 출력
       if (this.baseData.title === "") {
         this.errorMsg = true;
-        // alert("제목을 입력해주세요(필수)");
       } else {
+        //*날짜생성
         let currentDate = new Date();
         let year = currentDate.getFullYear();
         let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
@@ -86,7 +92,7 @@ export default {
         let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         this.baseData.updatedDate = dateString;
 
-        //id생성
+        //*신규id생성
         let idArray = [];
         if (this.todoitem.length !== 0) {
           this.todoitem.forEach((el) => {
@@ -102,11 +108,12 @@ export default {
         this.$emit("add-data", this.baseData);
       }
     },
+
+    //에러메시지 출력을 위한 함수
     errMsgChange() {
       this.errorMsg = false;
     },
   },
-  computed: {},
 };
 </script>
 

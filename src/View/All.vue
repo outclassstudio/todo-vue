@@ -28,44 +28,40 @@ import Done from "./Done.vue";
 
 export default {
   name: "All-View",
+
   props: { todoitem: Array },
+
   components: {
     "todo-view": Todo,
     "progress-view": Progress,
     "done-view": Done,
   },
+
   methods: {
-    // openModal() {
-    //   this.modalopen = true;
-    // },
-    // closeModal() {
-    //   this.modalopen = false;
-    // },
+    //데이터 추가 함수
     addData(data) {
       this.$emit("add-data", data);
     },
+
+    //데이터 수정 함수
     editData(data) {
       this.$emit("edit-data", data);
     },
+
+    //데이터 삭제 함수
     deleteData(data) {
       this.$emit("delete-data", data);
     },
-    // todofilter() {
-    //   let filtered = this.todoitem.filter((el) => {
-    //     return el.status === "ToDo";
-    //   });
-    //   return filtered;
-    // },
   },
 };
 </script>
 
 <style scoped>
 .all {
-  /* width: 300px; */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   gap: 25px;
+  margin-bottom: 15px;
 }
 </style>
