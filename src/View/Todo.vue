@@ -29,27 +29,41 @@ export default {
       modalopen: false,
     };
   },
+
   props: { todoitem: Array },
+
   components: {
     "add-modal": AddModal,
     "background-box": BackGround,
   },
+
   methods: {
+    //모달창 여는 함수
     openModal() {
       this.modalopen = true;
     },
+
+    //모달창 닫는 함수
     closeModal() {
       this.modalopen = false;
     },
+
+    //데이터 추가 함수
     addData(data) {
       this.$emit("add-data", data);
     },
+
+    //데이터 수정 함수
     editData(data) {
       this.$emit("edit-data", data);
     },
+
+    //데이터 삭제 함수
     deleteData(data) {
       this.$emit("delete-data", data);
     },
+
+    //현재 상태에 해당하는 데이터 추출
     todofilter() {
       let filtered = this.todoitem.filter((el) => {
         return el.status === "ToDo";

@@ -50,15 +50,22 @@ export default {
     "content-modal": ContentModal,
   },
   methods: {
+    //모달창 여는 함수
     openModal() {
       this.modalopen = true;
     },
+
+    //모달창 닫는 함수
     closeModal() {
       this.modalopen = false;
     },
+
+    //데이터 수정 함수
     editData(data) {
       this.$emit("edit-data", data);
     },
+
+    //데이터 삭제 함수
     deleteData() {
       this.$emit("delete-data", this.element.id);
     },

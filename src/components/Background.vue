@@ -30,29 +30,20 @@ export default {
     "content-box": ContentBox,
   },
   methods: {
+    //데이터 추가 함수
     addData(data) {
       this.$emit("add-data", data);
     },
+
+    //데이터 수정 함수
     editData(data) {
       this.$emit("edit-data", data);
     },
+
+    //데이터 삭제 함수
     deleteData(data) {
       this.$emit("delete-data", data);
     },
-    // statusGenerator() {
-    //   if (this.todoitem[0] !== null && this.todoitem[0] !== undefined) {
-    //     if (this.todoitem[0].status === "ToDo") {
-    //       return true;
-    //     } else {
-    //       return false;
-    //     }
-    //   } else {
-    //     return false;
-    //   }
-    // },
-    // openAddModal() {
-    //   this.$emit("opne-add-modal", true);
-    // },
   },
 };
 </script>

@@ -30,14 +30,6 @@
 <script>
 export default {
   name: "header-global",
-  data: function () {
-    return {
-      pathAll: false,
-      pathTodo: false,
-      pathProgress: false,
-      pathDone: false,
-    };
-  },
 };
 </script>
 

@@ -102,6 +102,7 @@
 <script>
 export default {
   name: "content-modal",
+
   data: function () {
     return {
       editMode: true,
@@ -119,11 +120,16 @@ export default {
       },
     };
   },
+
   props: { modalopen: Boolean, element: Object },
+
   methods: {
+    //모당창 닫는 함수
     closeModal() {
       this.$emit("close-modal", false);
     },
+
+    //수정모드On
     editModeOn() {
       if (this.baseData.status === "Done") {
         alert("완료된 이슈는 수정할 수 없습니다");
@@ -131,11 +137,16 @@ export default {
         this.editMode = false;
       }
     },
+
+    //수정모드Off
     editModeOff() {
       this.editMode = true;
       this.baseData.status = this.element.status;
     },
+
+    //데이터수정함수
     editData() {
+      //*날짜생성
       let currentDate = new Date();
       let year = currentDate.getFullYear();
       let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
@@ -146,8 +157,10 @@ export default {
       let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       this.baseData.updatedDate = dateString;
 
+      //*내용변경 테스트를 위한 키 설정
       let currentStatus = this.element.status.toLowerCase();
 
+      //*내용변경이 없을 때에 대한 테스트 로직
       if (
         this.element.title === this.baseData.title &&
         this.element.contents[currentStatus] ===
@@ -155,8 +168,15 @@ export default {
         this.element.status === this.baseData.status
       ) {
         alert("변경된 내용이 없습니다.");
-        // this.errorMsg = true;
       } else {
+        //*Progress에서 Todo로 상태변경시 Progress내용 삭제
+        if (
+          this.element.status === "Progress" &&
+          this.baseData.status === "ToDo"
+        ) {
+          this.baseData.contents.progress = "";
+        }
+
         this.$emit("edit-data", this.baseData);
       }
     },
