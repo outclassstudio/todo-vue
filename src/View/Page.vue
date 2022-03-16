@@ -1,51 +1,54 @@
 <template>
-  <div class="modal-bg" @keyup.esc="closeModal" tabindex="0">
+  <div class="modal-bg">
     <div class="modal-content" v-if="editMode">
-      <div class="modal-header">
-        <router-link :to="{ name: 'page', params: element }">
-          <div class="header-title">페이지로보기</div>
-        </router-link>
-        <div class="close-btn" @click="closeModal">X</div>
-      </div>
+      <!-- {{ params }} -->
+      <!-- {{ element }} -->
+      <!-- <div class="modal-header">{{ $route.params.id }}</div> -->
       <div class="content-box">
         <div class="content-title">제목</div>
-        <div class="title-content">{{ element.title }}</div>
+        <div class="title-content">{{ params.title }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
-        <div class="title-content">{{ element.status }}</div>
+        <div class="title-content">{{ params.status }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
-        <div class="title-content-large">{{ element.contents.todo }}</div>
+        <div class="title-content-large">
+          {{ params.contents.todo }}
+        </div>
       </div>
       <div
         class="content-box"
         v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
       >
         <div class="content-title">Progress 내용</div>
-        <div class="title-content-large">{{ element.contents.progress }}</div>
+        <div class="title-content-large">
+          {{ params.contents.progress }}
+        </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
-        <div class="title-content-large">{{ element.contents.done }}</div>
+        <div class="title-content-large">
+          {{ params.contents.done }}
+        </div>
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ element.updatedDate }}</div>
+        <div class="title-content">{{ params.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
-        <div class="modal-btn" @click="closeModal">닫기</div>
+        <router-link to="/"
+          ><div class="modal-btn back-btn">뒤로가기</div></router-link
+        >
         <div class="modal-btn save-btn" @click="editModeOn">수정</div>
       </div>
     </div>
     <div class="modal-content" v-else>
-      <div class="modal-header">
-        <router-link :to="`/page/${element.id}`">
-          <div class="header-title">페이지로보기</div>
-        </router-link>
-        <div class="close-btn" @click="closeModal">X</div>
-      </div>
+      <!-- {{ params }} -->
+      <!-- <div class="modal-header">
+        <div class="modal-header">{{ $route.params.id }}</div>
+      </div> -->
       <div class="content-box">
         <div class="content-title">제목</div>
         <input type="text" class="text" v-model="baseData.title" />
@@ -66,7 +69,7 @@
           v-if="baseData.status === 'ToDo'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'ToDo'">
-          {{ element.contents.todo }}
+          {{ params.contents.todo }}
         </div>
       </div>
       <div
@@ -80,7 +83,7 @@
           v-if="baseData.status === 'Progress'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'Progress'">
-          {{ element.contents.progress }}
+          {{ params.contents.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
@@ -89,10 +92,12 @@
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ element.updatedDate }}</div>
+        <div class="title-content">{{ params.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
-        <div class="modal-btn" @click="closeModal">닫기</div>
+        <router-link to="/"
+          ><div class="modal-btn back-btn">뒤로가기</div></router-link
+        >
         <div class="btn-sub-wrapper">
           <div class="modal-btn" @click="editModeOff">취소</div>
           <div class="modal-btn save-btn" @click="editData">저장</div>
@@ -102,35 +107,39 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: "content-modal",
-
+  name: "Page-View",
   data: function () {
     return {
+      params: this.$route.params,
       editMode: true,
       errorMsg: false,
       baseData: {
-        id: this.element.id,
-        title: this.element.title,
+        id: this.todoItemFilter()[0].id,
+        title: this.todoItemFilter()[0].title,
         contents: {
-          todo: this.element.contents.todo,
-          progress: this.element.contents.progress,
-          done: this.element.contents.done,
+          todo: this.todoItemFilter()[0].contents.todo,
+          progress: this.todoItemFilter()[0].contents.progress,
+          done: this.todoItemFilter()[0].contents.done,
         },
-        status: this.element.status,
-        updatedDate: this.element.updatedDate,
+        status: this.todoItemFilter()[0].status,
+        updatedDate: this.todoItemFilter()[0].updatedDate,
       },
     };
   },
 
-  props: { modalopen: Boolean, element: Object },
+  props: { todoitem: Array, element: Object },
 
   methods: {
-    //모당창 닫는 함수
-    closeModal() {
-      this.$emit("close-modal", false);
+    todoItemFilter() {
+      // console.log(this.$route.params.id);
+      // console.log(this.todoitem);
+      let filtered = this.todoitem.filter((el) => {
+        return el.id === Number(this.$route.params.id);
+      });
+
+      return filtered;
     },
 
     //수정모드On
@@ -142,10 +151,10 @@ export default {
       }
     },
 
-    //수정모드Off
+    // 수정모드Off
     editModeOff() {
       this.editMode = true;
-      this.baseData.status = this.element.status;
+      this.baseData.status = this.params.status;
     },
 
     //데이터수정함수
@@ -161,58 +170,60 @@ export default {
       let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       this.baseData.updatedDate = dateString;
 
-      //*내용변경 테스트를 위한 키 설정
-      let currentStatus = this.element.status.toLowerCase();
+      // *내용변경 테스트를 위한 키 설정
+      let currentStatus = this.params.status.toLowerCase();
+
+      // console.log(currentStatus);
+      console.log(this.params.status);
+      // console.log(this.baseData.status);
 
       //*내용변경이 없을 때에 대한 로직
       if (
-        this.element.title === this.baseData.title &&
-        this.element.contents[currentStatus] ===
+        this.params.title === this.baseData.title &&
+        this.params.contents[currentStatus] ===
           this.baseData.contents[currentStatus] &&
-        this.element.status === this.baseData.status
+        this.params.status === this.baseData.status
       ) {
         alert("변경된 내용이 없습니다.");
       } else {
         //*Progress에서 Todo로 상태변경시 Progress내용 삭제
         if (
-          this.element.status === "Progress" &&
+          this.params.status === "Progress" &&
           this.baseData.status === "ToDo"
         ) {
           this.baseData.contents.progress = "";
         }
-
         this.$emit("edit-data", this.baseData);
+        this.editMode = true;
       }
     },
   },
 };
 </script>
-
 <style scoped>
 .modal-bg {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.1);
-  position: fixed;
-  left: 0;
-  top: 0;
+  align-items: start;
+  /* background-color: rgba(0, 0, 0, 0.1); */
   width: 100vw;
   height: 100vh;
+  margin-top: 60px;
 }
 
 .modal-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: white;
+  align-items: center;
+  background-color: rgb(250, 250, 250);
   border: 1px soild #bbbbbb;
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 10px 10px -15px,
     rgba(0, 0, 0, 0.8) 0px -10px 10px -15px;
-  width: 400px;
-  padding: 30px;
-  gap: 20px;
+  width: 600px;
+  padding: 40px;
+  gap: 30px;
 }
 
 .modal-header {
@@ -241,35 +252,43 @@ a {
 
 .content-box {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 
 .content-box > input {
   border: 1px solid #c2c2c2;
   border-radius: 5px;
+  /* width: 500px; */
 }
 
 .content-title {
+  display: flex;
+  justify-content: left;
+  align-items: center;
   font-size: 17px;
   font-weight: bold;
   margin-bottom: 5px;
+  width: 120px;
 }
 
 .text {
-  height: 26px;
+  width: 263px;
+  height: 31px;
   padding-left: 9px;
   display: flex;
   align-items: center;
 }
 
 .select {
-  height: 30px;
+  width: 276px;
+  height: 35px;
   padding: 5px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
 }
 
 .textarea {
+  width: 255px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
   height: 62px;
@@ -280,6 +299,7 @@ a {
 
 .btn-wrapper {
   display: flex;
+  width: 400px;
   justify-content: space-between;
   margin: 5px 0px 5px 0px;
 }
@@ -312,10 +332,15 @@ a {
   background-color: #686868;
 }
 
+.back-btn {
+  width: 45px;
+}
+
 .title-content {
   display: flex;
   align-items: center;
-  height: 18px;
+  height: 23px;
+  width: 260px;
   padding: 5px 5px 5px 9px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
@@ -325,6 +350,7 @@ a {
 
 .title-content-large {
   height: 62px;
+  width: 255px;
   white-space: pre;
   border: 1px solid #c2c2c2;
   border-radius: 5px;

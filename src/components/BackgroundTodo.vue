@@ -11,6 +11,7 @@
     <quick-add
       v-if="quickadd"
       v-bind:todoitem="todoitem"
+      v-bind:originalItem="originalItem"
       @close-modal="closeQuickAdd"
       @add-data="addData"
     ></quick-add>
@@ -31,7 +32,7 @@ export default {
     };
   },
 
-  props: { todoitem: Array },
+  props: { todoitem: Array, originalItem: Array },
 
   components: {
     "content-box": ContentBox,
