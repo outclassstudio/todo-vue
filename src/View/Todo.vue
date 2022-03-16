@@ -6,6 +6,7 @@
     </div>
     <background-box
       v-bind:todoitem="todofilter()"
+      v-bind:originalItem="todoitem"
       @edit-data="editData"
       @delete-data="deleteData"
       @add-data="addData"
@@ -13,6 +14,7 @@
     <add-modal
       v-if="modalopen"
       v-bind:todoitem="todoitem"
+      v-bind:originalItem="todoitem"
       @close-modal="closeModal"
       @add-data="addData"
     ></add-modal>

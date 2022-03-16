@@ -40,6 +40,7 @@ export default {
   props: {
     modalopen: Boolean,
     todoitem: Array,
+    originalItem: Array,
   },
 
   methods: {
@@ -62,11 +63,11 @@ export default {
 
         //*신규id생성
         let idArray = [];
-        if (this.todoitem === undefined) {
+        if (this.originalItem === undefined) {
           this.baseData.id = 0;
         } else {
-          if (this.todoitem.length !== 0) {
-            this.todoitem.forEach((el) => {
+          if (this.originalItem.length !== 0) {
+            this.originalItem.forEach((el) => {
               idArray.push(el.id);
             });
             let newId = Math.max(...idArray) + 1;

@@ -73,7 +73,7 @@ export default {
     };
   },
 
-  props: { modalopen: Boolean, todoitem: Array },
+  props: { modalopen: Boolean, todoitem: Array, originalItem: Array },
 
   methods: {
     //모달창 닫는 함수
@@ -102,8 +102,8 @@ export default {
 
         //*신규id생성
         let idArray = [];
-        if (this.todoitem.length !== 0) {
-          this.todoitem.forEach((el) => {
+        if (this.originalItem.length !== 0) {
+          this.originalItem.forEach((el) => {
             idArray.push(el.id);
           });
           let newId = Math.max(...idArray) + 1;
