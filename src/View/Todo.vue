@@ -8,6 +8,7 @@
       v-bind:todoitem="todofilter()"
       @edit-data="editData"
       @delete-data="deleteData"
+      @add-data="addData"
     ></background-box>
     <add-modal
       v-if="modalopen"
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import BackGround from "../components/Background";
+import BackGround from "../components/BackgroundTodo";
 import AddModal from "../components/AddModal.vue";
 
 export default {
