@@ -1,23 +1,8 @@
 <template>
   <div class="all">
-    <todo-view
-      v-bind:todoitem="todoitem"
-      @add-data="addData"
-      @edit-data="editData"
-      @delete-data="deleteData"
-    ></todo-view>
-    <progress-view
-      v-bind:todoitem="todoitem"
-      @add-data="addData"
-      @edit-data="editData"
-      @delete-data="deleteData"
-    ></progress-view>
-    <done-view
-      v-bind:todoitem="todoitem"
-      @add-data="addData"
-      @edit-data="editData"
-      @delete-data="deleteData"
-    ></done-view>
+    <todo-view></todo-view>
+    <progress-view></progress-view>
+    <done-view></done-view>
   </div>
 </template>
 
@@ -29,29 +14,10 @@ import Done from "./Done.vue";
 export default {
   name: "All-View",
 
-  props: { todoitem: Array },
-
   components: {
     "todo-view": Todo,
     "progress-view": Progress,
     "done-view": Done,
-  },
-
-  methods: {
-    //데이터 추가 함수
-    addData(data) {
-      this.$emit("add-data", data);
-    },
-
-    //데이터 수정 함수
-    editData(data) {
-      this.$emit("edit-data", data);
-    },
-
-    //데이터 삭제 함수
-    deleteData(data) {
-      this.$emit("delete-data", data);
-    },
   },
 };
 </script>

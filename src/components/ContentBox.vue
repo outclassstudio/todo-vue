@@ -67,7 +67,8 @@ export default {
 
     //데이터 삭제 함수
     deleteData() {
-      this.$emit("delete-data", this.element.id);
+      // this.$emit("delete-data", this.element.id);
+      this.$store.commit("deleteData", this.element.id);
     },
   },
 };

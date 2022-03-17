@@ -29,12 +29,19 @@ export default {
 
   props: { todoitem: Array },
 
+  computed: {
+    issues() {
+      return this.$store.state.issues;
+    },
+  },
+
   methods: {
     //현재 상태에 해당하는 데이터 추출
     todofilter() {
-      let filtered = this.todoitem.filter((el) => {
+      let filtered = this.issues.filter((el) => {
         return el.status === "Done";
       });
+
       return filtered;
     },
 

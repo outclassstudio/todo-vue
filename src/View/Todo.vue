@@ -1,5 +1,6 @@
 <template>
   <div class="to-do">
+    <!-- {{ issues }} -->
     <div class="title">
       <div>To Do List</div>
       <div class="add-btn" @click="openModal">이슈만들기</div>
@@ -35,6 +36,12 @@ export default {
 
   props: { todoitem: Array },
 
+  computed: {
+    issues() {
+      return this.$store.state.issues;
+    },
+  },
+
   components: {
     "add-modal": AddModal,
     "background-box": BackGround,
@@ -68,9 +75,12 @@ export default {
 
     //현재 상태에 해당하는 데이터 추출
     todofilter() {
-      let filtered = this.todoitem.filter((el) => {
+      let filtered = this.issues.filter((el) => {
         return el.status === "ToDo";
       });
+      // let filtered = this.todoitem.filter((el) => {
+      //   return el.status === "ToDo";
+      // });
       return filtered;
     },
   },

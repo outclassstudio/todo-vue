@@ -125,6 +125,10 @@ export default {
     };
   },
 
+  created() {
+    console.log(this.element);
+  },
+
   props: { modalopen: Boolean, element: Object },
 
   methods: {
@@ -181,7 +185,8 @@ export default {
           this.baseData.contents.progress = "";
         }
 
-        this.$emit("edit-data", this.baseData);
+        this.$store.commit("editData", this.baseData);
+        // this.$emit("edit-data", this.baseData);
       }
     },
   },

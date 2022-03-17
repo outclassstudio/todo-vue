@@ -2,18 +2,12 @@
   <div class="mainDiv">
     <div class="summary">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
-      <content-box
-        v-bind:element="el"
-        @edit-data="editData"
-        @delete-data="deleteData"
-      ></content-box>
+      <content-box v-bind:element="el"></content-box>
     </div>
     <quick-add
       v-if="quickadd"
       v-bind:todoitem="todoitem"
-      v-bind:originalItem="originalItem"
       @close-modal="closeQuickAdd"
-      @add-data="addData"
     ></quick-add>
     <div class="add-box" @click="openQuickAdd" v-else>+ 이슈 빠르게 만들기</div>
   </div>
@@ -32,7 +26,7 @@ export default {
     };
   },
 
-  props: { todoitem: Array, originalItem: Array },
+  props: { todoitem: Array },
 
   components: {
     "content-box": ContentBox,
@@ -50,22 +44,6 @@ export default {
       if (this.quickadd === true) {
         this.quickadd = false;
       }
-    },
-
-    //데이터 추가 함수
-    addData(data) {
-      this.$emit("add-data", data);
-    },
-
-    //데이터 수정 함수
-    editData(data) {
-      // console.log(data);
-      this.$emit("edit-data", data);
-    },
-
-    //데이터 삭제 함수
-    deleteData(data) {
-      this.$emit("delete-data", data);
     },
   },
 };
