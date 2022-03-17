@@ -136,7 +136,6 @@ export default {
         this.baseData.id = newId;
 
         this.$emit("close-modal", false);
-        // this.$emit("add-data", this.baseData);
         this.$store.commit("addData", this.baseData);
       }
     },
@@ -178,7 +177,6 @@ export default {
   min-height: 400px;
   padding: 30px;
   gap: 25px;
-  /* z-index: 1; */
 }
 
 .modal-header {

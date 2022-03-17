@@ -48,7 +48,7 @@
       </div>
       <div class="content-box">
         <div class="content-title">제목</div>
-        <input type="text" class="text" v-model="baseData.title" />
+        <input type="text" class="text closed" v-model="baseData.title" />
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
@@ -65,7 +65,10 @@
           v-model="baseData.contents.todo"
           v-if="baseData.status === 'ToDo'"
         />
-        <div class="title-content-large" v-if="baseData.status !== 'ToDo'">
+        <div
+          class="title-content-large closed"
+          v-if="baseData.status !== 'ToDo'"
+        >
           {{ element.contents.todo }}
         </div>
       </div>
@@ -79,7 +82,10 @@
           v-model="baseData.contents.progress"
           v-if="baseData.status === 'Progress'"
         />
-        <div class="title-content-large" v-if="baseData.status !== 'Progress'">
+        <div
+          class="title-content-large closed"
+          v-if="baseData.status !== 'Progress'"
+        >
           {{ element.contents.progress }}
         </div>
       </div>
@@ -89,7 +95,7 @@
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ element.updatedDate }}</div>
+        <div class="title-content closed">{{ element.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
         <div class="modal-btn" @click="closeModal">닫기</div>
@@ -98,7 +104,6 @@
           <div class="modal-btn save-btn" @click="editData">저장</div>
         </div>
       </div>
-      <!-- <div class="error" v-if="errorMsg">변경된 내용이 없습니다.</div> -->
     </div>
   </div>
 </template>
@@ -123,10 +128,6 @@ export default {
         updatedDate: this.element.updatedDate,
       },
     };
-  },
-
-  created() {
-    console.log(this.element);
   },
 
   props: { modalopen: Boolean, element: Object },
@@ -186,7 +187,6 @@ export default {
         }
 
         this.$store.commit("editData", this.baseData);
-        // this.$emit("edit-data", this.baseData);
       }
     },
   },
@@ -343,5 +343,9 @@ a {
   justify-content: center;
   font-size: 14px;
   color: #dd0808;
+}
+
+.closed {
+  background-color: #f6f6f6;
 }
 </style>

@@ -1,13 +1,11 @@
 <template>
   <div class="to-do">
-    <!-- {{ issues }} -->
     <div class="title">
       <div>To Do List</div>
       <div class="add-btn" @click="openModal">이슈만들기</div>
     </div>
     <background-box
       v-bind:todoitem="todofilter()"
-      v-bind:originalItem="todoitem"
       @edit-data="editData"
       @delete-data="deleteData"
       @add-data="addData"
@@ -15,7 +13,6 @@
     <add-modal
       v-if="modalopen"
       v-bind:todoitem="todoitem"
-      v-bind:originalItem="todoitem"
       @close-modal="closeModal"
       @add-data="addData"
     ></add-modal>
