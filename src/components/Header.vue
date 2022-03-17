@@ -35,20 +35,22 @@ export default {
 
 <style scoped>
 .header {
-  background-color: black;
-  color: white;
+  background-color: none;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100vw;
+  height: 30px;
   align-items: center;
   padding: 10px;
   margin-bottom: 25px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 4px 0px;
 }
 
 a {
   text-decoration: none;
-  color: white;
-  margin: 5px;
+  color: #3b3b3b;
+  margin: 7px;
 }
 
 a:hover {

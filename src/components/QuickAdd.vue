@@ -108,6 +108,7 @@ export default {
       this.errorMsg = false;
     },
 
+    //빠른추가창 닫는 함수
     closeQuickAdd() {
       this.$emit("close-modal", false);
     },

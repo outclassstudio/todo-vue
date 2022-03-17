@@ -6,15 +6,15 @@
       >
       <div class="content-box">
         <div class="content-title">제목</div>
-        <div class="title-content">{{ singleIssue[0].title }}</div>
+        <div class="title-content view">{{ singleIssue[0].title }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
-        <div class="title-content">{{ singleIssue[0].status }}</div>
+        <div class="title-content view">{{ singleIssue[0].status }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
-        <div class="title-content-large">
+        <div class="title-content-large view">
           {{ singleIssue[0].contents.todo }}
         </div>
       </div>
@@ -23,19 +23,19 @@
         v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
       >
         <div class="content-title">Progress 내용</div>
-        <div class="title-content-large">
+        <div class="title-content-large view">
           {{ singleIssue[0].contents.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
-        <div class="content-title">Done 내용</div>
+        <div class="content-title view">Done 내용</div>
         <div class="title-content-large">
           {{ singleIssue[0].contents.done }}
         </div>
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ singleIssue[0].updatedDate }}</div>
+        <div class="title-content view">{{ singleIssue[0].updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
         <div class="modal-btn back-btn" @click="goBack">뒤로가기</div>
@@ -122,10 +122,7 @@ export default {
   },
 
   computed: {
-    issues() {
-      return this.$store.state.issues;
-    },
-
+    //이슈불러와서 ID로필터링
     singleIssue() {
       return this.$store.state.issues.filter((el) => {
         return el.id === Number(this.$route.params.id);
@@ -367,5 +364,9 @@ a {
   justify-content: center;
   font-size: 14px;
   color: #dd0808;
+}
+
+.view {
+  background-color: white;
 }
 </style>

@@ -30,6 +30,7 @@ export default {
   props: { todoitem: Array },
 
   computed: {
+    //이슈불러오기
     issues() {
       return this.$store.state.issues;
     },

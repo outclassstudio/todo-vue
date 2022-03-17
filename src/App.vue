@@ -11,12 +11,6 @@ import Header from "./components/Header.vue";
 export default {
   name: "App",
 
-  data: function () {
-    return {
-      item: [],
-    };
-  },
-
   components: {
     "header-global": Header,
   },
