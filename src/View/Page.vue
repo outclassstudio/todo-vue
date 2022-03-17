@@ -1,21 +1,21 @@
 <template>
   <div class="modal-bg">
     <div class="modal-content" v-if="editMode">
-      <!-- {{ params }} -->
-      <!-- {{ element }} -->
-      <!-- <div class="modal-header">{{ $route.params.id }}</div> -->
+      <router-link to="/"
+        ><div class="modal-header">홈으로 돌아가기</div></router-link
+      >
       <div class="content-box">
         <div class="content-title">제목</div>
-        <div class="title-content">{{ params.title }}</div>
+        <div class="title-content">{{ singleIssue[0].title }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
-        <div class="title-content">{{ params.status }}</div>
+        <div class="title-content">{{ singleIssue[0].status }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
         <div class="title-content-large">
-          {{ params.contents.todo }}
+          {{ singleIssue[0].contents.todo }}
         </div>
       </div>
       <div
@@ -24,31 +24,28 @@
       >
         <div class="content-title">Progress 내용</div>
         <div class="title-content-large">
-          {{ params.contents.progress }}
+          {{ singleIssue[0].contents.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
         <div class="title-content-large">
-          {{ params.contents.done }}
+          {{ singleIssue[0].contents.done }}
         </div>
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ params.updatedDate }}</div>
+        <div class="title-content">{{ singleIssue[0].updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
-        <router-link to="/"
-          ><div class="modal-btn back-btn">뒤로가기</div></router-link
-        >
+        <div class="modal-btn back-btn" @click="goBack">뒤로가기</div>
         <div class="modal-btn save-btn" @click="editModeOn">수정</div>
       </div>
     </div>
     <div class="modal-content" v-else>
-      <!-- {{ params }} -->
-      <!-- <div class="modal-header">
-        <div class="modal-header">{{ $route.params.id }}</div>
-      </div> -->
+      <router-link to="/"
+        ><div class="modal-header">홈으로 돌아가기</div></router-link
+      >
       <div class="content-box">
         <div class="content-title">제목</div>
         <input type="text" class="text" v-model="baseData.title" />
@@ -69,7 +66,7 @@
           v-if="baseData.status === 'ToDo'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'ToDo'">
-          {{ params.contents.todo }}
+          {{ singleIssue[0].contents.todo }}
         </div>
       </div>
       <div
@@ -83,7 +80,7 @@
           v-if="baseData.status === 'Progress'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'Progress'">
-          {{ params.contents.progress }}
+          {{ singleIssue[0].contents.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
@@ -92,12 +89,10 @@
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ params.updatedDate }}</div>
+        <div class="title-content">{{ singleIssue[0].updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
-        <router-link to="/"
-          ><div class="modal-btn back-btn">뒤로가기</div></router-link
-        >
+        <div class="modal-btn back-btn" @click="goBack">뒤로가기</div>
         <div class="btn-sub-wrapper">
           <div class="modal-btn" @click="editModeOff">취소</div>
           <div class="modal-btn save-btn" @click="editData">저장</div>
@@ -115,33 +110,32 @@ export default {
       params: this.$route.params,
       editMode: true,
       errorMsg: false,
-      baseData: {
-        id: this.todoItemFilter()[0].id,
-        title: this.todoItemFilter()[0].title,
-        contents: {
-          todo: this.todoItemFilter()[0].contents.todo,
-          progress: this.todoItemFilter()[0].contents.progress,
-          done: this.todoItemFilter()[0].contents.done,
-        },
-        status: this.todoItemFilter()[0].status,
-        updatedDate: this.todoItemFilter()[0].updatedDate,
-      },
+      baseData: {},
     };
+  },
+
+  created() {
+    //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
+    //*created와 함께 baseData를 기존 데이터로 업데이트
+    let cloned = JSON.parse(JSON.stringify(this.singleIssue[0]));
+    this.baseData = cloned;
+  },
+
+  computed: {
+    issues() {
+      return this.$store.state.issues;
+    },
+
+    singleIssue() {
+      return this.$store.state.issues.filter((el) => {
+        return el.id === Number(this.$route.params.id);
+      });
+    },
   },
 
   props: { todoitem: Array, element: Object },
 
   methods: {
-    todoItemFilter() {
-      // console.log(this.$route.params.id);
-      // console.log(this.todoitem);
-      let filtered = this.todoitem.filter((el) => {
-        return el.id === Number(this.$route.params.id);
-      });
-
-      return filtered;
-    },
-
     //수정모드On
     editModeOn() {
       if (this.baseData.status === "Done") {
@@ -154,7 +148,9 @@ export default {
     // 수정모드Off
     editModeOff() {
       this.editMode = true;
-      this.baseData.status = this.params.status;
+      //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
+      let status = JSON.parse(JSON.stringify(this.singleIssue[0].status));
+      this.baseData.status = status;
     },
 
     //데이터수정함수
@@ -171,31 +167,34 @@ export default {
       this.baseData.updatedDate = dateString;
 
       // *내용변경 테스트를 위한 키 설정
-      let currentStatus = this.params.status.toLowerCase();
-
-      // console.log(currentStatus);
-      console.log(this.params.status);
-      // console.log(this.baseData.status);
+      let currentStatus = this.singleIssue[0].status.toLowerCase();
 
       //*내용변경이 없을 때에 대한 로직
       if (
-        this.params.title === this.baseData.title &&
-        this.params.contents[currentStatus] ===
+        this.singleIssue[0].title === this.baseData.title &&
+        this.singleIssue[0].contents[currentStatus] ===
           this.baseData.contents[currentStatus] &&
-        this.params.status === this.baseData.status
+        this.singleIssue[0].status === this.baseData.status
       ) {
         alert("변경된 내용이 없습니다.");
       } else {
         //*Progress에서 Todo로 상태변경시 Progress내용 삭제
         if (
-          this.params.status === "Progress" &&
+          this.singleIssue[0].status === "Progress" &&
           this.baseData.status === "ToDo"
         ) {
           this.baseData.contents.progress = "";
         }
-        this.$emit("edit-data", this.baseData);
+
+        //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
+        let updateData = JSON.parse(JSON.stringify(this.baseData));
+        this.$store.commit("editData", updateData);
         this.editMode = true;
       }
+    },
+
+    goBack() {
+      this.$router.go(-1);
     },
   },
 };
@@ -228,7 +227,11 @@ export default {
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
+  width: 600px;
+  padding-left: 145px;
+  font-size: 12px;
+  color: #797979;
 }
 
 .header-title {
@@ -272,26 +275,26 @@ a {
 }
 
 .text {
-  width: 263px;
-  height: 31px;
+  width: 323px;
+  height: 41px;
   padding-left: 9px;
   display: flex;
   align-items: center;
 }
 
 .select {
-  width: 276px;
-  height: 35px;
+  width: 336px;
+  height: 45px;
   padding: 5px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
 }
 
 .textarea {
-  width: 255px;
+  width: 315px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
-  height: 62px;
+  height: 82px;
   padding: 10px;
   white-space: normal;
   /* font-weight: 500; */
@@ -299,7 +302,7 @@ a {
 
 .btn-wrapper {
   display: flex;
-  width: 400px;
+  width: 460px;
   justify-content: space-between;
   margin: 5px 0px 5px 0px;
 }
@@ -339,8 +342,8 @@ a {
 .title-content {
   display: flex;
   align-items: center;
-  height: 23px;
-  width: 260px;
+  height: 33px;
+  width: 320px;
   padding: 5px 5px 5px 9px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
@@ -349,8 +352,8 @@ a {
 }
 
 .title-content-large {
-  height: 62px;
-  width: 255px;
+  height: 82px;
+  width: 315px;
   white-space: pre;
   border: 1px solid #c2c2c2;
   border-radius: 5px;

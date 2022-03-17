@@ -40,7 +40,6 @@ export default {
   props: {
     modalopen: Boolean,
     todoitem: Array,
-    originalItem: Array,
   },
 
   methods: {
@@ -49,6 +48,8 @@ export default {
       //*타이틀 없을 시 에러메시지 출력
       if (this.baseData.title === "") {
         this.errorMsg = true;
+      } else if (this.baseData.status === "") {
+        this.statusErrorMsg = true;
       } else {
         //*날짜생성
         let currentDate = new Date();
@@ -61,24 +62,21 @@ export default {
         let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         this.baseData.updatedDate = dateString;
 
-        //*신규id생성
+        //*신규id생성`
         let idArray = [];
-        if (this.originalItem === undefined) {
-          this.baseData.id = 0;
+        if (this.$store.state.issues.length !== 0) {
+          this.$store.state.issues.forEach((el) => {
+            idArray.push(el.id);
+          });
+          let newId = Math.max(...idArray) + 1;
+          this.baseData.id = newId;
         } else {
-          if (this.originalItem.length !== 0) {
-            this.originalItem.forEach((el) => {
-              idArray.push(el.id);
-            });
-            let newId = Math.max(...idArray) + 1;
-            this.baseData.id = newId;
-          } else {
-            this.baseData.id = 0;
-          }
+          this.baseData.id = 0;
         }
 
         this.$emit("close-modal", false);
-        this.$emit("add-data", this.baseData);
+        // this.$emit("add-data", this.baseData);
+        this.$store.commit("addData", this.baseData);
       }
     },
 

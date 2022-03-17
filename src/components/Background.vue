@@ -2,16 +2,8 @@
   <div class="mainDiv">
     <div class="summary">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
-      <content-box
-        v-bind:element="el"
-        @add-data="addData"
-        @edit-data="editData"
-        @delete-data="deleteData"
-      ></content-box>
+      <content-box v-bind:element="el"></content-box>
     </div>
-    <!-- <div class="add-box" v-if="statusGenerator()" @clic="openAddModal">
-      + 이슈 만들기
-    </div> -->
   </div>
 </template>
 
@@ -20,30 +12,9 @@ import ContentBox from "./ContentBox";
 
 export default {
   name: "Background-Box",
-  data: function () {
-    return {
-      topTitle: { ToDo: "할 일", Progress: "진행 중", Done: "완료" },
-    };
-  },
   props: { todoitem: Array },
   components: {
     "content-box": ContentBox,
-  },
-  methods: {
-    //데이터 추가 함수
-    addData(data) {
-      this.$emit("add-data", data);
-    },
-
-    //데이터 수정 함수
-    editData(data) {
-      this.$emit("edit-data", data);
-    },
-
-    //데이터 삭제 함수
-    deleteData(data) {
-      this.$emit("delete-data", data);
-    },
   },
 };
 </script>

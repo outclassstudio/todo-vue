@@ -73,7 +73,7 @@ export default {
     };
   },
 
-  props: { modalopen: Boolean, todoitem: Array, originalItem: Array },
+  props: { modalopen: Boolean, todoitem: Array },
 
   methods: {
     //모달창 닫는 함수
@@ -100,10 +100,10 @@ export default {
         let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         this.baseData.updatedDate = dateString;
 
-        //*신규id생성
+        //*신규id생성`
         let idArray = [];
-        if (this.originalItem.length !== 0) {
-          this.originalItem.forEach((el) => {
+        if (this.$store.state.issues.length !== 0) {
+          this.$store.state.issues.forEach((el) => {
             idArray.push(el.id);
           });
           let newId = Math.max(...idArray) + 1;
@@ -113,7 +113,8 @@ export default {
         }
 
         this.$emit("close-modal", false);
-        this.$emit("add-data", this.baseData);
+        // this.$emit("add-data", this.baseData);
+        this.$store.commit("addData", this.baseData);
       }
     },
 
