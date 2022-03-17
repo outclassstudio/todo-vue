@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     issues: [],
+    deletedId: [],
   },
 
   getters: {},
@@ -57,13 +58,16 @@ export default createStore({
 
     //데이터 삭제 함수
     deleteData(state, data) {
+      //*아이디 저장(신규생성시 점검용)
+      state.deletedId.push(data);
+
       //*아이디로 데이터 필터링(제거)
       let filtered = state.issues.filter((el) => {
         return el.id !== data;
       });
 
       //*기존데이터 업데이트
-      this.state.issues = filtered;
+      state.issues = filtered;
       alert("삭제완료!");
     },
   },

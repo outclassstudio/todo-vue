@@ -64,15 +64,38 @@ export default {
 
         //*신규id생성`
         let idArray = [];
-        if (this.$store.state.issues.length !== 0) {
+        let newId;
+        if (
+          this.$store.state.issues.length !== 0 &&
+          this.$store.state.deletedId.length !== 0
+        ) {
+          this.$store.state.deletedId.forEach((el) => {
+            idArray.push(el);
+          });
           this.$store.state.issues.forEach((el) => {
             idArray.push(el.id);
           });
-          let newId = Math.max(...idArray) + 1;
-          this.baseData.id = newId;
+          newId = Math.max(...idArray) + 1;
+        } else if (
+          this.$store.state.issues.length !== 0 &&
+          this.$store.state.deletedId.length === 0
+        ) {
+          this.$store.state.issues.forEach((el) => {
+            idArray.push(el.id);
+          });
+          newId = Math.max(...idArray) + 1;
+        } else if (
+          this.$store.state.issues.length === 0 &&
+          this.$store.state.deletedId.length !== 0
+        ) {
+          this.$store.state.deletedId.forEach((el) => {
+            idArray.push(el);
+          });
+          newId = Math.max(...idArray) + 1;
         } else {
-          this.baseData.id = 0;
+          newId = 0;
         }
+        this.baseData.id = newId;
 
         this.$emit("close-modal", false);
         // this.$emit("add-data", this.baseData);
