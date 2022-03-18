@@ -1,20 +1,66 @@
 <template>
-  <div class="mainDiv">
+  <div class="mainDiv" @mouseenter="visionOn" @mouseleave="visionOff">
     <div class="summary">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
       <content-box v-bind:element="el"></content-box>
+    </div>
+    <quick-add
+      v-if="quickadd"
+      v-bind:todoitem="todoitem"
+      v-bind:status="status"
+      @close-modal="closeQuickAdd"
+    ></quick-add>
+    <div
+      class="add-box"
+      :class="{ invisible: invisible }"
+      @click="openQuickAdd"
+      v-else
+    >
+      + 이슈 빠르게 만들기
     </div>
   </div>
 </template>
 
 <script>
 import ContentBox from "./ContentBox";
+import QuickAdd from "./QuickAdd.vue";
 
 export default {
   name: "Background-Box",
-  props: { todoitem: Array },
+  data: function () {
+    return {
+      modalopen: false,
+      quickadd: false,
+      invisible: true,
+    };
+  },
+  props: { todoitem: Array, status: String },
   components: {
     "content-box": ContentBox,
+    "quick-add": QuickAdd,
+  },
+  methods: {
+    //빠른 추가 여는 함수
+    openQuickAdd() {
+      this.quickadd = true;
+    },
+
+    //빠른 추가 닫는 함수
+    closeQuickAdd() {
+      if (this.quickadd === true) {
+        this.quickadd = false;
+      }
+    },
+
+    //빠른 추가 보이게함
+    visionOn() {
+      this.invisible = false;
+    },
+
+    //빠른 추가 안보이게함
+    visionOff() {
+      this.invisible = true;
+    },
   },
 };
 </script>
@@ -26,7 +72,7 @@ export default {
   align-items: center;
   background-color: #f6f6f6;
   width: 280px;
-  min-height: 700px;
+  min-height: 750px;
   border: 1px soild #bbbbbb;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px -5px,
     rgba(0, 0, 0, 0.6) 0px 10px 10px -15px;
@@ -62,5 +108,9 @@ export default {
 
 .add-box:hover {
   background-color: #64646420;
+}
+
+.invisible {
+  display: none;
 }
 </style>

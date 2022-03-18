@@ -7,6 +7,7 @@
     <quick-add
       v-if="quickadd"
       v-bind:todoitem="todoitem"
+      v-bind:status="status"
       @close-modal="closeQuickAdd"
     ></quick-add>
     <div class="add-box" @click="openQuickAdd" v-else>+ 이슈 빠르게 만들기</div>
@@ -26,7 +27,7 @@ export default {
     };
   },
 
-  props: { todoitem: Array },
+  props: { todoitem: Array, status: String },
 
   components: {
     "content-box": ContentBox,
@@ -56,7 +57,7 @@ export default {
   align-items: center;
   background-color: #f6f6f6;
   width: 280px;
-  min-height: 700px;
+  min-height: 750px;
   border: 1px soild #bbbbbb;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px -5px,
     rgba(0, 0, 0, 0.6) 0px 10px 10px -15px;

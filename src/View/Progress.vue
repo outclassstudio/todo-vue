@@ -5,6 +5,7 @@
     </div>
     <background-box
       v-bind:todoitem="todofilter()"
+      v-bind:status="status"
       @edit-data="editData"
       @delete-data="deleteData"
     ></background-box>
@@ -20,6 +21,7 @@ export default {
   data: function () {
     return {
       modalopen: false,
+      status: "Progress",
     };
   },
 
@@ -66,6 +68,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .title {

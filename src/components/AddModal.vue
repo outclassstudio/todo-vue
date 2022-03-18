@@ -73,7 +73,7 @@ export default {
     };
   },
 
-  props: { modalopen: Boolean, todoitem: Array },
+  props: { modalopen: Boolean },
 
   methods: {
     //모달창 닫는 함수
@@ -144,6 +144,8 @@ export default {
     errMsgChange() {
       this.errorMsg = false;
     },
+
+    //상태미선택시 오류메시지 출력
     statusErrMsgChange() {
       this.statusErrorMsg = false;
     },

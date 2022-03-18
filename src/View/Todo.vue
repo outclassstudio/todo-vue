@@ -6,13 +6,13 @@
     </div>
     <background-box
       v-bind:todoitem="todofilter()"
+      v-bind:status="status"
       @edit-data="editData"
       @delete-data="deleteData"
       @add-data="addData"
     ></background-box>
     <add-modal
       v-if="modalopen"
-      v-bind:todoitem="todoitem"
       @close-modal="closeModal"
       @add-data="addData"
     ></add-modal>
@@ -28,6 +28,7 @@ export default {
   data: function () {
     return {
       modalopen: false,
+      status: "ToDo",
     };
   },
 
@@ -90,6 +91,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .title {
@@ -119,5 +121,10 @@ export default {
 
 .add-btn:hover {
   background-color: #4b4b4b;
+}
+
+.add-btn:active {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px -1px 0px 0px;
+  background-color: #383838;
 }
 </style>
