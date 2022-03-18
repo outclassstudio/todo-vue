@@ -30,7 +30,7 @@ export default {
           progress: "",
           done: "",
         },
-        status: "ToDo",
+        status: this.status,
         updatedDate: "",
       },
       errorMsg: false,
@@ -40,6 +40,7 @@ export default {
   props: {
     modalopen: Boolean,
     todoitem: Array,
+    status: String,
   },
 
   methods: {
@@ -98,7 +99,6 @@ export default {
         this.baseData.id = newId;
 
         this.$emit("close-modal", false);
-        // this.$emit("add-data", this.baseData);
         this.$store.commit("addData", this.baseData);
       }
     },

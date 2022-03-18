@@ -101,7 +101,7 @@
         <div class="modal-btn" @click="closeModal">닫기</div>
         <div class="btn-sub-wrapper">
           <div class="modal-btn" @click="editModeOff">취소</div>
-          <div class="modal-btn save-btn" @click="editData">저장</div>
+          <div class="modal-btn save-btn" @click.prevent="editData">저장</div>
         </div>
       </div>
     </div>
