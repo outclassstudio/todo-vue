@@ -29,13 +29,8 @@ export default createStore({
         else return false;
       };
 
-      //*일치하는 이슈의 인데스만 뽑아내기
-      let findIdx;
-      state.issues.forEach((el) => {
-        if (el.id === data.id) {
-          findIdx = el.id;
-        }
-      });
+      //*수정하려는 이슈의 인데스 뽑아내기
+      let findIdx = state.issues.indexOf(findItem[0]);
 
       //*id로 데이터 필터링 : 수정전 데이터 제거
       let filtered = state.issues.filter((el) => {

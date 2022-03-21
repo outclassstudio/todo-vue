@@ -48,7 +48,7 @@
       </div>
       <div class="content-box">
         <div class="content-title">제목</div>
-        <input type="text" class="text closed" v-model="baseData.title" />
+        <input type="text" class="text" v-model="baseData.title" />
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
@@ -169,24 +169,29 @@ export default {
       //*내용변경 테스트를 위한 키 설정
       let currentStatus = this.element.status.toLowerCase();
 
-      //*내용변경이 없을 때에 대한 로직
-      if (
-        this.element.title === this.baseData.title &&
-        this.element.contents[currentStatus] ===
-          this.baseData.contents[currentStatus] &&
-        this.element.status === this.baseData.status
-      ) {
-        alert("변경된 내용이 없습니다.");
-      } else {
-        //*Progress에서 Todo로 상태변경시 Progress내용 삭제
+      //*제목입력에 대한 점검
+      if (this.baseData.title !== "") {
+        //*내용변경이 없을 때에 대한 로직
         if (
-          this.element.status === "Progress" &&
-          this.baseData.status === "ToDo"
+          this.element.title === this.baseData.title &&
+          this.element.contents[currentStatus] ===
+            this.baseData.contents[currentStatus] &&
+          this.element.status === this.baseData.status
         ) {
-          this.baseData.contents.progress = "";
-        }
+          alert("변경된 내용이 없습니다.");
+        } else {
+          //*Progress에서 Todo로 상태변경시 Progress내용 삭제
+          if (
+            this.element.status === "Progress" &&
+            this.baseData.status === "ToDo"
+          ) {
+            this.baseData.contents.progress = "";
+          }
 
-        this.$store.commit("editData", this.baseData);
+          this.$store.commit("editData", this.baseData);
+        }
+      } else {
+        alert("제목을 입력해주세요");
       }
     },
   },
