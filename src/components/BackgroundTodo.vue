@@ -1,6 +1,6 @@
 <template>
   <div class="mainDiv">
-    <div class="summary">{{ todoitem.length }} 이슈</div>
+    <div class="summary" draggable="true">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
       <content-box v-bind:element="el"></content-box>
     </div>

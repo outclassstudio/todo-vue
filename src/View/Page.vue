@@ -28,8 +28,8 @@
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
-        <div class="content-title view">Done 내용</div>
-        <div class="title-content-large">
+        <div class="content-title">Done 내용</div>
+        <div class="title-content-large view">
           {{ singleIssue[0].contents.done }}
         </div>
       </div>
@@ -166,27 +166,32 @@ export default {
       // *내용변경 테스트를 위한 키 설정
       let currentStatus = this.singleIssue[0].status.toLowerCase();
 
-      //*내용변경이 없을 때에 대한 로직
-      if (
-        this.singleIssue[0].title === this.baseData.title &&
-        this.singleIssue[0].contents[currentStatus] ===
-          this.baseData.contents[currentStatus] &&
-        this.singleIssue[0].status === this.baseData.status
-      ) {
-        alert("변경된 내용이 없습니다.");
-      } else {
-        //*Progress에서 Todo로 상태변경시 Progress내용 삭제
+      //*제목입력에 대한 점검
+      if (this.baseData.title !== "") {
+        //*내용변경이 없을 때에 대한 로직
         if (
-          this.singleIssue[0].status === "Progress" &&
-          this.baseData.status === "ToDo"
+          this.singleIssue[0].title === this.baseData.title &&
+          this.singleIssue[0].contents[currentStatus] ===
+            this.baseData.contents[currentStatus] &&
+          this.singleIssue[0].status === this.baseData.status
         ) {
-          this.baseData.contents.progress = "";
-        }
+          alert("변경된 내용이 없습니다.");
+        } else {
+          //*Progress에서 Todo로 상태변경시 Progress내용 삭제
+          if (
+            this.singleIssue[0].status === "Progress" &&
+            this.baseData.status === "ToDo"
+          ) {
+            this.baseData.contents.progress = "";
+          }
 
-        //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
-        let updateData = JSON.parse(JSON.stringify(this.baseData));
-        this.$store.commit("editData", updateData);
-        this.editMode = true;
+          //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
+          let updateData = JSON.parse(JSON.stringify(this.baseData));
+          this.$store.commit("editData", updateData);
+          this.editMode = true;
+        }
+      } else {
+        alert("제목을 입력해주세요");
       }
     },
 
