@@ -4,6 +4,9 @@ export default createStore({
   state: {
     issues: [],
     deletedId: [],
+    prevPosition: 0,
+    currentPosition: 0,
+    dif: 0,
   },
 
   getters: {},
@@ -48,7 +51,34 @@ export default createStore({
 
       //*데이터 업데이트
       state.issues = filtered;
-      alert("수정완료!");
+      // alert("수정완료!");
+    },
+
+    //데이터 이동함수
+    moveData(state, data) {
+      //*현재 데이터
+      let currentData = state.issues.filter((el) => {
+        return el.id === Number(data.currentId);
+      });
+
+      //*현재 데이터 제거
+      let filtered = state.issues.filter((el) => {
+        return el.id !== Number(data.currentId);
+      });
+
+      //*이동하고 싶은 쪽 데이터
+      let movingTargetData = state.issues.filter((el) => {
+        return el.id === Number(data.movingTargetId);
+      });
+
+      //*이동하고 싶은 곳의 인덱스
+      let idx = state.issues.indexOf(movingTargetData[0]);
+
+      //*이동하고 싶은 곳으로 현재데이터 추가
+      filtered.splice(idx, 0, currentData[0]);
+
+      //*데이터 업데이트
+      state.issues = filtered;
     },
 
     //데이터 삭제 함수

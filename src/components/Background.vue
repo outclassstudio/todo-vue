@@ -1,5 +1,12 @@
 <template>
-  <div class="mainDiv" @mouseenter="visionOn" @mouseleave="visionOff">
+  <div
+    class="mainDiv"
+    @mouseenter="visionOn"
+    @mouseleave="visionOff"
+    @drop="onDrop($event, status)"
+    @dragenter.prevent.stop
+    @dragover.prevent.stop
+  >
     <div class="summary">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
       <content-box v-bind:element="el"></content-box>
@@ -60,6 +67,25 @@ export default {
     //빠른 추가 안보이게함
     visionOff() {
       this.invisible = true;
+    },
+
+    //드랍했을 때
+    onDrop(event, status) {
+      // console.log("그렇다면이건가");
+      const targetId = event.dataTransfer.getData("id");
+      const issue = document.getElementById(targetId);
+      issue.style.display = "flex";
+
+      let item = this.$store.state.issues.filter((el) => {
+        return el.id === Number(targetId);
+      });
+      if (item[0].status === "Done") {
+        alert("완료된 이슈는 수정할 수 없습니다");
+      } else {
+        let newItem = JSON.parse(JSON.stringify(item));
+        newItem[0].status = status;
+        this.$store.commit("editData", newItem[0]);
+      }
     },
   },
 };
