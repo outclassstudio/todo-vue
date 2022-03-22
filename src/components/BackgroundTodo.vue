@@ -1,6 +1,12 @@
 <template>
-  <div class="mainDiv">
-    <div class="summary" draggable="true">{{ todoitem.length }} 이슈</div>
+  <div
+    class="mainDiv"
+    @dragenter.prevent.stop
+    @dragover.prevent.stop
+    @dragleave.prevent.stop
+    @drop="onDrop($event, status)"
+  >
+    <div class="summary">{{ todoitem.length }} 이슈</div>
     <div class="subDiv" v-for="el in todoitem" :key="el">
       <content-box v-bind:element="el"></content-box>
     </div>
@@ -46,6 +52,32 @@ export default {
         this.quickadd = false;
       }
     },
+
+    //드랍했을 때
+    onDrop(event, status) {
+      // console.log("설마이건가");
+      const targetId = event.dataTransfer.getData("id");
+      const issue = document.getElementById(targetId);
+      issue.style.display = "flex";
+
+      let item = this.$store.state.issues.filter((el) => {
+        return el.id === Number(targetId);
+      });
+
+      // let newItem = JSON.parse(JSON.stringify(item));
+
+      // if (newItem[0].status !== status) {
+      //   newItem[0].status = status;
+      //   this.$store.commit("editData", newItem[0]);
+      // }
+      if (item[0].status === "Done") {
+        alert("완료된 이슈는 수정할 수 없습니다");
+      } else {
+        let newItem = JSON.parse(JSON.stringify(item));
+        newItem[0].status = status;
+        this.$store.commit("editData", newItem[0]);
+      }
+    },
   },
 };
 </script>
@@ -68,6 +100,7 @@ export default {
 
 .subDiv {
   display: flex;
+  /* transition: top 1s ease-in-out; */
 }
 
 .summary {

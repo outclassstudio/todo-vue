@@ -1,6 +1,16 @@
 <template>
   <div class="itemboxDiv">
-    <div class="itemBox" @click="openModal">
+    <div
+      :id="element.id"
+      class="itemBox"
+      @click="openModal"
+      @drop="onDrop($event, element)"
+      draggable="true"
+      @dragstart="startDrag($event, element.id)"
+      @dragenter.prevent.stop
+      @dragover.prevent.stop
+      @dragleave.prevent.stop
+    >
       <div class="issue-wrapper">
         <div class="issue-title">{{ element.title }}</div>
         <div class="sub-content">
@@ -69,6 +79,56 @@ export default {
     deleteData() {
       this.$store.commit("deleteData", this.element.id);
     },
+
+    //드래그시작
+    startDrag(event, id) {
+      setTimeout(() => {
+        const issue = document.getElementById(this.element.id);
+        issue.style.display = "none";
+      }, 0);
+
+      const item = document.getElementById(this.element.id);
+      const position = item.getBoundingClientRect().top;
+      this.$store.state.prevPosition = position;
+      // console.log(this.$store.state.prevPosition);
+
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.setData("id", id);
+    },
+
+    //드래그완료
+    onDrop(event, data) {
+      let currentId = event.dataTransfer.getData("id");
+      const issue = document.getElementById(currentId);
+      issue.style.display = "flex";
+
+      // const item = document.getElementById(data.id);
+      // const dif = this.$store.state.dif;
+      // item.style.transform = `translateY(0px)`;
+
+      let commitData = {
+        data: data,
+        currentId: currentId,
+        movingTargetId: data.id,
+      };
+      this.$store.commit("moveData", commitData);
+    },
+
+    // overAction(event, data) {
+    // @dragover="overAction($event, element)"
+    // const item = document.getElementById(data.id);
+    // const position = item.getBoundingClientRect().top;
+    // this.$store.state.currentPosition = position;
+    // this.$store.state.dif =
+    //   this.$store.state.prevPosition - this.$store.state.currentPosition;
+    // const dif = this.$store.state.dif;
+
+    // console.log(dif);
+    // console.log(item);
+
+    // item.style.transform = `translateY(${dif}px)`;
+    // },
   },
 };
 </script>
@@ -80,6 +140,8 @@ export default {
   align-items: center;
   background-color: none;
   gap: 7px;
+  /* transition-duration: 1s; */
+  /* transition: transform 0.5s ease-in; */
 }
 
 .itemBox {
@@ -97,6 +159,7 @@ export default {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 0px 0px;
   gap: 10px;
+  transition: transform 0.3s ease-in;
 }
 
 .itemBox:hover {
