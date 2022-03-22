@@ -24,12 +24,12 @@
         >
       </div>
       <div class="add-btn" @click="openModal">+</div>
-      <add-modal
-        v-if="modalopen"
-        @close-modal="closeModal"
-        @add-data="addData"
-      ></add-modal>
     </div>
+    <add-modal
+      v-if="modalopen"
+      @close-modal="closeModal"
+      @add-data="addData"
+    ></add-modal>
   </div>
 </template>
 
@@ -43,6 +43,7 @@ export default {
       modalopen: false,
     };
   },
+
   components: {
     "add-modal": AddModal,
   },

@@ -9,7 +9,9 @@
       </div>
       <div class="content-box">
         <div class="content-title">제목</div>
-        <div class="title-content">{{ element.title }}</div>
+        <div class="title-content">
+          {{ element.title }}
+        </div>
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
@@ -66,7 +68,7 @@
           v-if="baseData.status === 'ToDo'"
         />
         <div
-          class="title-content-large closed"
+          class="title-content-large closed no-drag"
           v-if="baseData.status !== 'ToDo'"
         >
           {{ element.contents.todo }}
@@ -83,7 +85,7 @@
           v-if="baseData.status === 'Progress'"
         />
         <div
-          class="title-content-large closed"
+          class="title-content-large closed no-drag"
           v-if="baseData.status !== 'Progress'"
         >
           {{ element.contents.progress }}
@@ -95,7 +97,9 @@
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content closed">{{ element.updatedDate }}</div>
+        <div class="title-content closed no-drag">
+          {{ element.updatedDate }}
+        </div>
       </div>
       <div class="btn-wrapper">
         <div class="modal-btn" @click="closeModal">닫기</div>
@@ -352,5 +356,9 @@ a {
 
 .closed {
   background-color: #f6f6f6;
+}
+
+.no-drag {
+  user-select: none;
 }
 </style>

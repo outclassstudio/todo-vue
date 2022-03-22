@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @drop="drop($event)" @dragenter.prevent.stop @dragover.prevent.stop>
     <header-global></header-global>
     <router-view class="space"></router-view>
     <footer-global></footer-global>
@@ -17,6 +17,14 @@ export default {
     "header-global": Header,
     "footer-global": Footer,
   },
+
+  methods: {
+    drop(event) {
+      const targetId = event.dataTransfer.getData("id");
+      const issue = document.getElementById(targetId);
+      issue.style.display = "flex";
+    },
+  },
 };
 </script>
 
@@ -28,6 +36,6 @@ export default {
 }
 
 .space {
-  margin-top: 80px;
+  padding-top: 80px;
 }
 </style>
