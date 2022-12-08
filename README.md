@@ -1,27 +1,3 @@
 # vue-practice-2
 
-## Project setup
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
+## indexedDB에 데이터 저장해서 쓸 수 있도록 개선중...
