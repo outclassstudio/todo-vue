@@ -18,6 +18,10 @@ export default {
     "footer-global": Footer,
   },
 
+  created() {
+    //indexeddb 오픈
+  },
+
   methods: {
     drop(event) {
       const targetId = event.dataTransfer.getData("id");

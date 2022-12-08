@@ -1,6 +1,8 @@
+import idb from "@/api/idb";
 import { createStore } from "vuex";
 
 export default createStore({
+  //전역으로 관리하고 싶은 스테이트를 만든다
   state: {
     issues: [],
     deletedId: [],
@@ -11,10 +13,13 @@ export default createStore({
 
   getters: {},
 
+  //state를 변경하는 함수
   mutations: {
     //데이터 추가 함수
-    addData(state, data) {
+    async addData(state, data) {
+      console.log("데이터 체크", data);
       state.issues.push(data);
+      await idb.addData(data);
       // alert("저장완료!");
     },
 
@@ -22,18 +27,18 @@ export default createStore({
     editData(state, data) {
       //!정렬 : Status에 따라 분기를 나눠서 다르게 정렬
       //*아이디가 일치하는 이슈 찾기
-      let findItem = state.issues.filter((el) => {
+      let findItem = state.issues.find((el) => {
         return el.id === data.id;
       });
 
       //*데이터 수정시 status의 변동여부 체크, 같으면 true, 다르면 false
       let compareStatus = () => {
-        if (findItem[0].status === data.status) return true;
+        if (findItem.status === data.status) return true;
         else return false;
       };
 
       //*수정하려는 이슈의 인데스 뽑아내기
-      let findIdx = state.issues.indexOf(findItem[0]);
+      let findIdx = state.issues.indexOf(findItem);
 
       //*id로 데이터 필터링 : 수정전 데이터 제거
       let filtered = state.issues.filter((el) => {
@@ -85,6 +90,7 @@ export default createStore({
     deleteData(state, data) {
       //*아이디 저장(신규생성시 점검용)
       state.deletedId.push(data);
+      idb.deleteData(data);
 
       //*아이디로 데이터 필터링(제거)
       let filtered = state.issues.filter((el) => {
