@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { makeDate } from "../hooks/date";
+
 export default {
   name: "add-modal",
 
@@ -90,14 +92,7 @@ export default {
         this.statusErrorMsg = true;
       } else {
         //*날짜생성
-        let currentDate = new Date();
-        let year = currentDate.getFullYear();
-        let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-        let day = ("0" + currentDate.getDate()).slice(-2);
-        let hours = ("0" + currentDate.getHours()).slice(-2);
-        let minutes = ("0" + currentDate.getMinutes()).slice(-2);
-        let seconds = ("0" + currentDate.getSeconds()).slice(-2);
-        let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        const dateString = makeDate();
         this.baseData.updatedDate = dateString;
 
         //*신규id생성`

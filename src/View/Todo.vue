@@ -36,6 +36,7 @@ export default {
 
   computed: {
     issues() {
+      //this.$store로 호출
       return this.$store.state.issues;
     },
   },
