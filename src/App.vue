@@ -9,6 +9,7 @@
 <script>
 import Header from "./components/Header.vue";
 import Footer from "./components/SimpleFooter.vue";
+import idb from "./api/idb";
 
 export default {
   name: "App",
@@ -18,8 +19,10 @@ export default {
     "footer-global": Footer,
   },
 
-  created() {
-    //indexeddb 오픈
+  async created() {
+    const data = await idb.getData();
+    data.onsuccess = (e) =>
+      e.target.result.forEach((el) => this.$store.commit("getData", el));
   },
 
   methods: {

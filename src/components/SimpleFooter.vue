@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">Vue 연습용 프로젝트입니다.</div>
+  <div class="footer">초간단 Todo-List입니다.</div>
 </template>
 <script>
 export default {

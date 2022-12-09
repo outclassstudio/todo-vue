@@ -15,7 +15,7 @@
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
         <div class="title-content-large view">
-          {{ singleIssue[0].contents.todo }}
+          {{ singleIssue[0].todo }}
         </div>
       </div>
       <div
@@ -24,13 +24,13 @@
       >
         <div class="content-title">Progress 내용</div>
         <div class="title-content-large view">
-          {{ singleIssue[0].contents.progress }}
+          {{ singleIssue[0].progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
         <div class="title-content-large view">
-          {{ singleIssue[0].contents.done }}
+          {{ singleIssue[0].done }}
         </div>
       </div>
       <div class="content-box">
@@ -62,11 +62,11 @@
         <div class="content-title">To-Do 내용</div>
         <textarea
           class="textarea"
-          v-model="baseData.contents.todo"
+          v-model="baseData.todo"
           v-if="baseData.status === 'ToDo'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'ToDo'">
-          {{ singleIssue[0].contents.todo }}
+          {{ singleIssue[0].todo }}
         </div>
       </div>
       <div
@@ -76,16 +76,16 @@
         <div class="content-title">Progress 내용</div>
         <textarea
           class="textarea"
-          v-model="baseData.contents.progress"
+          v-model="baseData.progress"
           v-if="baseData.status === 'Progress'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'Progress'">
-          {{ singleIssue[0].contents.progress }}
+          {{ singleIssue[0].progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.done" />
+        <textarea class="textarea" v-model="baseData.done" />
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
@@ -171,8 +171,7 @@ export default {
         //*내용변경이 없을 때에 대한 로직
         if (
           this.singleIssue[0].title === this.baseData.title &&
-          this.singleIssue[0].contents[currentStatus] ===
-            this.baseData.contents[currentStatus] &&
+          this.singleIssue[0][currentStatus] === this.baseData[currentStatus] &&
           this.singleIssue[0].status === this.baseData.status
         ) {
           alert("변경된 내용이 없습니다.");
@@ -182,7 +181,7 @@ export default {
             this.singleIssue[0].status === "Progress" &&
             this.baseData.status === "ToDo"
           ) {
-            this.baseData.contents.progress = "";
+            this.baseData.progress = "";
           }
 
           //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가

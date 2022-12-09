@@ -28,7 +28,9 @@ export default {
           keyPath: "id",
         });
         objectStore.createIndex("title", "title", { unique: false });
-        // objectStore.createIndex("contents", "contents", { unique: false });
+        objectStore.createIndex("todo", "todo", { unique: false });
+        objectStore.createIndex("progress", "progress", { unique: false });
+        objectStore.createIndex("done", "done", { unique: false });
         objectStore.createIndex("status", "status", { unique: false });
         objectStore.createIndex("updatedDate", "updatedDate", {
           unique: false,
@@ -36,6 +38,51 @@ export default {
       };
     });
   },
+
+  async getData() {
+    let db = await this.getDb();
+
+    return new Promise((resolve) => {
+      let trans = db.transaction(["todos"], "readonly");
+      let store = trans.objectStore("todos");
+      resolve(store.getAll());
+    });
+  },
+
+  async addData(data) {
+    const target = {};
+    const newData = Object.assign(target, data);
+
+    let db = await this.getDb();
+
+    return new Promise((resolve) => {
+      let trans = db.transaction(["todos"], "readwrite");
+      trans.oncomplete = () => {
+        resolve();
+      };
+
+      let store = trans.objectStore("todos");
+      store.add(newData);
+    });
+  },
+
+  async editData(data) {
+    const target = {};
+    const newData = Object.assign(target, data);
+
+    let db = await this.getDb();
+
+    return new Promise((resolve) => {
+      let trans = db.transaction(["todos"], "readwrite");
+      trans.oncomplete = () => {
+        resolve();
+      };
+
+      let store = trans.objectStore("todos");
+      store.put(newData);
+    });
+  },
+
   async deleteData(data) {
     let db = await this.getDb();
 
@@ -47,49 +94,6 @@ export default {
 
       let store = trans.objectStore("todos");
       store.delete(data);
-    });
-  },
-  async getData() {
-    let db = await this.getDb();
-
-    return new Promise((resolve) => {
-      let trans = db.transaction(["todos"], "readonly");
-      trans.oncomplete = () => {
-        // resolve();
-      };
-
-      let store = trans.objectStore("todos");
-      resolve(store.getAll());
-      // let cats = [];
-
-      // store.openCursor().onsuccess = (e) => {
-      //   let cursor = e.target.result;
-      //   if (cursor) {
-      //     cats.push(cursor.value);
-      //     cursor.continue();
-      //   }
-      // };
-    });
-  },
-
-  async addData(data) {
-    const killPassword = ({ contents, ...rest }) => {
-      console.log(contents);
-      return rest;
-    };
-    const filtered = killPassword(data);
-
-    let db = await this.getDb();
-
-    return new Promise((resolve) => {
-      let trans = db.transaction(["todos"], "readwrite");
-      trans.oncomplete = () => {
-        resolve();
-      };
-
-      let store = trans.objectStore("todos");
-      console.log(store, "check store");
-      store.add(filtered);
     });
   },
 };
