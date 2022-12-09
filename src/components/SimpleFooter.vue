@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">초간단 Todo-List입니다.</div>
+  <div class="footer">Outclass Todo-List.</div>
 </template>
 <script>
 export default {

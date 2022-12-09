@@ -8,7 +8,7 @@
     @dragover.prevent.stop
   >
     <div class="summary">{{ todoitem.length }} 이슈</div>
-    <div class="subDiv" v-for="el in todoitem" :key="el">
+    <div id="subDiv" v-for="el in todoitem" :key="el">
       <content-box v-bind:element="el"></content-box>
     </div>
     <quick-add
@@ -71,21 +71,19 @@ export default {
 
     //드랍했을 때
     onDrop(event, status) {
-      // console.log("그렇다면이건가");
+      // const cloned = document.querySelector("#clone");
+      // cloned.remove();
       const targetId = event.dataTransfer.getData("id");
       const issue = document.getElementById(targetId);
       issue.style.display = "flex";
 
-      let item = this.$store.state.issues.filter((el) => {
+      let item = this.$store.state.issues.find((el) => {
         return el.id === Number(targetId);
       });
-      if (item[0].status === "Done") {
-        alert("완료된 이슈는 수정할 수 없습니다");
-      } else {
-        let newItem = JSON.parse(JSON.stringify(item));
-        newItem[0].status = status;
-        this.$store.commit("editData", newItem[0]);
-      }
+
+      let newItem = JSON.parse(JSON.stringify(item));
+      newItem.status = status;
+      this.$store.commit("editData", newItem);
     },
   },
 };
@@ -107,7 +105,7 @@ export default {
   gap: 5px;
 }
 
-.subDiv {
+#subDiv {
   display: flex;
 }
 

@@ -70,6 +70,8 @@ export default {
     const target = {};
     const newData = Object.assign(target, data);
 
+    console.log(newData, "check");
+
     let db = await this.getDb();
 
     return new Promise((resolve) => {

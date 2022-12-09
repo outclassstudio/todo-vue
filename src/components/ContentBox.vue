@@ -28,13 +28,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="deleteBtn"
-        @click="deleteData"
-        v-if="element.status !== 'Done'"
-      >
-        삭제
-      </div>
+      <div class="deleteBtn" @click="deleteData">삭제</div>
     </div>
     <content-modal
       v-if="modalopen"
@@ -83,14 +77,22 @@ export default {
     //드래그시작
     startDrag(event, id) {
       setTimeout(() => {
+        // const parent = document.querySelector(".itemboxDiv");
         const issue = document.getElementById(this.element.id);
+        // const cloned = issue.cloneNode(true);
+        // cloned.id = "clone";
+        // cloned.style.opacity = 0.5;
+        // cloned.style.boxShadow = "#0000CD 0px 0px 3px";
+        // cloned.style.marginTop = "7px";
+        // parent.parentNode.appendChild(cloned);
+        // console.log("checkcheck", parent.parentNode);
+
         issue.style.display = "none";
       }, 0);
 
       const item = document.getElementById(this.element.id);
       const position = item.getBoundingClientRect().top;
       this.$store.state.prevPosition = position;
-      // console.log(this.$store.state.prevPosition);
 
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
@@ -99,6 +101,8 @@ export default {
 
     //드래그완료
     onDrop(event, data) {
+      // const cloned = document.querySelector("#clone");
+      // cloned.remove();
       let currentId = event.dataTransfer.getData("id");
       const issue = document.getElementById(currentId);
       issue.style.display = "flex";

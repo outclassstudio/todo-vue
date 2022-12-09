@@ -21,10 +21,7 @@
         <div class="content-title">To-Do 내용</div>
         <div class="title-content-large">{{ element.todo }}</div>
       </div>
-      <div
-        class="content-box"
-        v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
-      >
+      <div class="content-box" v-if="baseData.status !== 'ToDo'">
         <div class="content-title">Progress 내용</div>
         <div class="title-content-large">{{ element.progress }}</div>
       </div>
@@ -74,10 +71,7 @@
           {{ element.todo }}
         </div>
       </div>
-      <div
-        class="content-box"
-        v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
-      >
+      <div class="content-box" v-if="baseData.status !== 'ToDo'">
         <div class="content-title">Progress 내용</div>
         <textarea
           class="textarea"
@@ -144,11 +138,7 @@ export default {
 
     //수정모드On
     editModeOn() {
-      if (this.baseData.status === "Done") {
-        alert("완료된 이슈는 수정할 수 없습니다");
-      } else {
-        this.editMode = false;
-      }
+      this.editMode = false;
     },
 
     //수정모드Off
