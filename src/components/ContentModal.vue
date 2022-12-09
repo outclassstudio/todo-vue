@@ -19,18 +19,18 @@
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
-        <div class="title-content-large">{{ element.contents.todo }}</div>
+        <div class="title-content-large">{{ element.todo }}</div>
       </div>
       <div
         class="content-box"
         v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
       >
         <div class="content-title">Progress 내용</div>
-        <div class="title-content-large">{{ element.contents.progress }}</div>
+        <div class="title-content-large">{{ element.progress }}</div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
-        <div class="title-content-large">{{ element.contents.done }}</div>
+        <div class="title-content-large">{{ element.done }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
@@ -64,14 +64,14 @@
         <div class="content-title">To-Do 내용</div>
         <textarea
           class="textarea"
-          v-model="baseData.contents.todo"
+          v-model="baseData.todo"
           v-if="baseData.status === 'ToDo'"
         />
         <div
           class="title-content-large closed no-drag"
           v-if="baseData.status !== 'ToDo'"
         >
-          {{ element.contents.todo }}
+          {{ element.todo }}
         </div>
       </div>
       <div
@@ -81,19 +81,19 @@
         <div class="content-title">Progress 내용</div>
         <textarea
           class="textarea"
-          v-model="baseData.contents.progress"
+          v-model="baseData.progress"
           v-if="baseData.status === 'Progress'"
         />
         <div
           class="title-content-large closed no-drag"
           v-if="baseData.status !== 'Progress'"
         >
-          {{ element.contents.progress }}
+          {{ element.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.done" />
+        <textarea class="textarea" v-model="baseData.done" />
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
@@ -113,6 +113,8 @@
 </template>
 
 <script>
+import { makeDate } from "../hooks/date";
+
 export default {
   name: "content-modal",
 
@@ -123,11 +125,9 @@ export default {
       baseData: {
         id: this.element.id,
         title: this.element.title,
-        contents: {
-          todo: this.element.contents.todo,
-          progress: this.element.contents.progress,
-          done: this.element.contents.done,
-        },
+        todo: this.element.todo,
+        progress: this.element.progress,
+        done: this.element.done,
         status: this.element.status,
         updatedDate: this.element.updatedDate,
       },
@@ -160,14 +160,7 @@ export default {
     //데이터수정함수
     editData() {
       //*날짜생성
-      let currentDate = new Date();
-      let year = currentDate.getFullYear();
-      let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-      let day = ("0" + currentDate.getDate()).slice(-2);
-      let hours = ("0" + currentDate.getHours()).slice(-2);
-      let minutes = ("0" + currentDate.getMinutes()).slice(-2);
-      let seconds = ("0" + currentDate.getSeconds()).slice(-2);
-      let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      const dateString = makeDate();
       this.baseData.updatedDate = dateString;
 
       //*내용변경 테스트를 위한 키 설정
@@ -178,8 +171,7 @@ export default {
         //*내용변경이 없을 때에 대한 로직
         if (
           this.element.title === this.baseData.title &&
-          this.element.contents[currentStatus] ===
-            this.baseData.contents[currentStatus] &&
+          this.element[currentStatus] === this.baseData[currentStatus] &&
           this.element.status === this.baseData.status
         ) {
           alert("변경된 내용이 없습니다.");
@@ -189,7 +181,7 @@ export default {
             this.element.status === "Progress" &&
             this.baseData.status === "ToDo"
           ) {
-            this.baseData.contents.progress = "";
+            this.baseData.progress = "";
           }
 
           this.$store.commit("editData", this.baseData);

@@ -2,7 +2,7 @@
   <div class="modal-bg" @keyup.esc="closeModal" tabindex="0">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="header-title">연습용 프로젝트</div>
+        <div class="header-title">Simple Todo-List</div>
         <div class="close-btn" @click="closeModal">X</div>
       </div>
       <div class="content-box">
@@ -28,18 +28,18 @@
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.todo" />
+        <textarea class="textarea" v-model="baseData.todo" />
       </div>
       <div
         class="content-box"
         v-if="baseData.status === 'Progress' || baseData.status === 'Done'"
       >
         <div class="content-title">Progress 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.progress" />
+        <textarea class="textarea" v-model="baseData.progress" />
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
-        <textarea class="textarea" v-model="baseData.contents.done" />
+        <textarea class="textarea" v-model="baseData.done" />
       </div>
       <div class="btn-wrapper">
         <div class="modal-btn" @click="closeModal">닫기</div>
@@ -62,11 +62,14 @@ export default {
       baseData: {
         id: "",
         title: "",
-        contents: {
-          todo: "",
-          progress: "",
-          done: "",
-        },
+        // contents: {
+        //   todo: "",
+        //   progress: "",
+        //   done: "",
+        // },
+        todo: "",
+        progress: "",
+        done: "",
         status: "ToDo",
         updatedDate: "",
       },

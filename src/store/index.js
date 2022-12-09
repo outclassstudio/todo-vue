@@ -2,7 +2,6 @@ import idb from "@/api/idb";
 import { createStore } from "vuex";
 
 export default createStore({
-  //전역으로 관리하고 싶은 스테이트를 만든다
   state: {
     issues: [],
     deletedId: [],
@@ -13,17 +12,26 @@ export default createStore({
 
   getters: {},
 
-  //state를 변경하는 함수
   mutations: {
-    //데이터 추가 함수
-    async addData(state, data) {
-      console.log("데이터 체크", data);
-      state.issues.push(data);
-      await idb.addData(data);
-      // alert("저장완료!");
+    /** 데이터 불러오기 함수*/
+    async getData(state, data) {
+      const issue = state.issues.find((issue) => issue.id === data.id);
+      if (!issue) {
+        state.issues.push(data);
+      }
     },
 
-    //데이터 수정 함수
+    /** 데이터 추가 함수*/
+    async addData(state, data) {
+      const issue = state.issues.find((issue) => issue.id === data.id);
+      if (!issue) {
+        console.log("뭐가문제여", data);
+        state.issues.push(data);
+        await idb.addData(data);
+      }
+    },
+
+    /** 데이터 수정 함수 */
     editData(state, data) {
       //!정렬 : Status에 따라 분기를 나눠서 다르게 정렬
       //*아이디가 일치하는 이슈 찾기
@@ -55,14 +63,14 @@ export default createStore({
       }
 
       //*데이터 업데이트
+      filtered.forEach((issue) => idb.editData(issue));
       state.issues = filtered;
-      // alert("수정완료!");
     },
 
-    //데이터 이동함수
+    /** 데이터 이동함수 */
     moveData(state, data) {
       //*현재 데이터
-      let currentData = state.issues.filter((el) => {
+      let currentData = state.issues.find((el) => {
         return el.id === Number(data.currentId);
       });
 
@@ -72,25 +80,24 @@ export default createStore({
       });
 
       //*이동하고 싶은 쪽 데이터
-      let movingTargetData = state.issues.filter((el) => {
+      let movingTargetData = state.issues.find((el) => {
         return el.id === Number(data.movingTargetId);
       });
 
       //*이동하고 싶은 곳의 인덱스
-      let idx = state.issues.indexOf(movingTargetData[0]);
+      let idx = state.issues.indexOf(movingTargetData);
 
       //*이동하고 싶은 곳으로 현재데이터 추가
-      filtered.splice(idx, 0, currentData[0]);
+      filtered.splice(idx, 0, currentData);
 
       //*데이터 업데이트
       state.issues = filtered;
     },
 
-    //데이터 삭제 함수
+    /** 데이터 삭제 함수 */
     deleteData(state, data) {
       //*아이디 저장(신규생성시 점검용)
       state.deletedId.push(data);
-      idb.deleteData(data);
 
       //*아이디로 데이터 필터링(제거)
       let filtered = state.issues.filter((el) => {
@@ -98,6 +105,7 @@ export default createStore({
       });
 
       //*기존데이터 업데이트
+      idb.deleteData(data);
       state.issues = filtered;
       alert("삭제완료!");
     },
