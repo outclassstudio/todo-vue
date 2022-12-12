@@ -65,13 +65,9 @@ export default {
         return el.id === Number(targetId);
       });
 
-      if (item.status === "Done") {
-        alert("완료된 이슈는 수정할 수 없습니다");
-      } else {
-        let newItem = JSON.parse(JSON.stringify(item));
-        newItem.status = status;
-        this.$store.commit("editData", newItem);
-      }
+      let newItem = JSON.parse(JSON.stringify(item));
+      newItem.status = status;
+      this.$store.commit("editData", newItem);
     },
   },
 };

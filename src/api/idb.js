@@ -98,4 +98,9 @@ export default {
       store.delete(data);
     });
   },
+
+  async clearData() {
+    let db = await this.getDb();
+    db.clear();
+  },
 };

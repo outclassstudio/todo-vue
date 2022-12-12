@@ -34,21 +34,21 @@ export default createStore({
     editData(state, data) {
       //!정렬 : Status에 따라 분기를 나눠서 다르게 정렬
       //*아이디가 일치하는 이슈 찾기
-      let findItem = state.issues.find((el) => {
+      const findItem = state.issues.find((el) => {
         return el.id === data.id;
       });
 
       //*데이터 수정시 status의 변동여부 체크, 같으면 true, 다르면 false
-      let compareStatus = () => {
+      const compareStatus = () => {
         if (findItem.status === data.status) return true;
         else return false;
       };
 
       //*수정하려는 이슈의 인데스 뽑아내기
-      let findIdx = state.issues.indexOf(findItem);
+      const findIdx = state.issues.indexOf(findItem);
 
       //*id로 데이터 필터링 : 수정전 데이터 제거
-      let filtered = state.issues.filter((el) => {
+      const filtered = state.issues.filter((el) => {
         return el.id !== data.id;
       });
 
@@ -58,7 +58,12 @@ export default createStore({
         filtered.splice(findIdx, 0, data);
       } else {
         //? Status변경시 뒤로
+        //todo 여기서 아이디를 바꿔줘야함
+        idb.clearData();
         filtered.push(data);
+        filtered.forEach((issue, idx) => {
+          issue.id = idx;
+        });
       }
 
       //*데이터 업데이트
@@ -69,17 +74,17 @@ export default createStore({
     /** 데이터 이동함수 */
     moveData(state, data) {
       //*현재 데이터
-      let currentData = state.issues.find((el) => {
+      const currentData = state.issues.find((el) => {
         return el.id === Number(data.currentId);
       });
 
       //*이동하고 싶은 쪽 데이터
-      let movingTargetData = state.issues.find((el) => {
+      const movingTargetData = state.issues.find((el) => {
         return el.id === Number(data.movingTargetId);
       });
 
       //*현재 데이터 제거
-      let filtered = state.issues
+      const filtered = state.issues
         .filter((el) => el.id !== Number(data.currentId))
         .filter((el) => el.id !== Number(data.movingTargetId));
 
@@ -93,6 +98,7 @@ export default createStore({
       filtered.sort((a, b) => a.id - b.id);
 
       //*데이터 업데이트
+      // filtered.forEach((issue) => idb.editData(issue));
       state.issues = filtered;
     },
 
@@ -102,7 +108,7 @@ export default createStore({
       state.deletedId.push(data);
 
       //*아이디로 데이터 필터링(제거)
-      let filtered = state.issues.filter((el) => {
+      const filtered = state.issues.filter((el) => {
         return el.id !== data;
       });
 
