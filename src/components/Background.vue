@@ -96,7 +96,7 @@ export default {
   align-items: center;
   background-color: #f6f6f6;
   width: 280px;
-  min-height: 750px;
+  min-height: 650px;
   border: 1px soild #bbbbbb;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px -5px,
     rgba(0, 0, 0, 0.6) 0px 10px 10px -15px;
