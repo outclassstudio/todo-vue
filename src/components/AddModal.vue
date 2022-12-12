@@ -62,11 +62,6 @@ export default {
       baseData: {
         id: "",
         title: "",
-        // contents: {
-        //   todo: "",
-        //   progress: "",
-        //   done: "",
-        // },
         todo: "",
         progress: "",
         done: "",

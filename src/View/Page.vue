@@ -103,6 +103,8 @@
   </div>
 </template>
 <script>
+import { makeDate } from "../hooks/date";
+
 export default {
   name: "Page-View",
   data: function () {
@@ -153,14 +155,7 @@ export default {
     //데이터수정함수
     editData() {
       //*날짜생성
-      let currentDate = new Date();
-      let year = currentDate.getFullYear();
-      let month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
-      let day = ("0" + currentDate.getDate()).slice(-2);
-      let hours = ("0" + currentDate.getHours()).slice(-2);
-      let minutes = ("0" + currentDate.getMinutes()).slice(-2);
-      let seconds = ("0" + currentDate.getSeconds()).slice(-2);
-      let dateString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      const dateString = makeDate();
       this.baseData.updatedDate = dateString;
 
       // *내용변경 테스트를 위한 키 설정
@@ -207,8 +202,8 @@ export default {
   align-items: start;
   /* background-color: rgba(0, 0, 0, 0.1); */
   width: 100vw;
-  height: 100vh;
-  margin-top: 100px;
+  /* height: 100vh; */
+  margin: 20px 0px;
 }
 
 .modal-content {

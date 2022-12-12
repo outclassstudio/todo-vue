@@ -13,7 +13,7 @@ export default createStore({
   getters: {},
 
   mutations: {
-    /** 데이터 불러오기 함수*/
+    /** 데이터 불러오기 함수 */
     async getData(state, data) {
       const issue = state.issues.find((issue) => issue.id === data.id);
       if (!issue) {
@@ -21,11 +21,10 @@ export default createStore({
       }
     },
 
-    /** 데이터 추가 함수*/
+    /** 데이터 추가 함수 */
     async addData(state, data) {
       const issue = state.issues.find((issue) => issue.id === data.id);
       if (!issue) {
-        console.log("뭐가문제여", data);
         state.issues.push(data);
         await idb.addData(data);
       }
@@ -74,21 +73,24 @@ export default createStore({
         return el.id === Number(data.currentId);
       });
 
-      //*현재 데이터 제거
-      let filtered = state.issues.filter((el) => {
-        return el.id !== Number(data.currentId);
-      });
-
       //*이동하고 싶은 쪽 데이터
       let movingTargetData = state.issues.find((el) => {
         return el.id === Number(data.movingTargetId);
       });
 
-      //*이동하고 싶은 곳의 인덱스
-      let idx = state.issues.indexOf(movingTargetData);
+      //*현재 데이터 제거
+      let filtered = state.issues
+        .filter((el) => el.id !== Number(data.currentId))
+        .filter((el) => el.id !== Number(data.movingTargetId));
 
-      //*이동하고 싶은 곳으로 현재데이터 추가
-      filtered.splice(idx, 0, currentData);
+      //*아이디 바꾸기
+      [currentData.id, movingTargetData.id] = [
+        movingTargetData.id,
+        currentData.id,
+      ];
+
+      filtered.push(currentData, movingTargetData);
+      filtered.sort((a, b) => a.id - b.id);
 
       //*데이터 업데이트
       state.issues = filtered;
