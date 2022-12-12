@@ -2,7 +2,7 @@
   <div class="to-do">
     <div class="title">
       <div>To Do List</div>
-      <div class="add-btn" @click="openModal">이슈만들기</div>
+      <!-- <div class="add-btn" @click="openModal">이슈만들기</div> -->
     </div>
     <background-box
       v-bind:todoitem="todofilter()"
@@ -11,17 +11,17 @@
       @delete-data="deleteData"
       @add-data="addData"
     ></background-box>
-    <add-modal
+    <!-- <add-modal
       v-if="modalopen"
       @close-modal="closeModal"
       @add-data="addData"
-    ></add-modal>
+    ></add-modal> -->
   </div>
 </template>
 
 <script>
 import BackGround from "../components/BackgroundTodo";
-import AddModal from "../components/AddModal.vue";
+// import AddModal from "../components/AddModal.vue";
 
 export default {
   name: "To-Do",
@@ -42,20 +42,20 @@ export default {
   },
 
   components: {
-    "add-modal": AddModal,
+    // "add-modal": AddModal,
     "background-box": BackGround,
   },
 
   methods: {
     //모달창 여는 함수
-    openModal() {
-      this.modalopen = true;
-    },
+    // openModal() {
+    //   this.modalopen = true;
+    // },
 
     //모달창 닫는 함수
-    closeModal() {
-      this.modalopen = false;
-    },
+    // closeModal() {
+    //   this.modalopen = false;
+    // },
 
     //데이터 추가 함수
     addData(data) {
@@ -74,12 +74,7 @@ export default {
 
     //현재 상태에 해당하는 데이터 추출
     todofilter() {
-      let filtered = this.issues.filter((el) => {
-        return el.status === "ToDo";
-      });
-      // let filtered = this.todoitem.filter((el) => {
-      //   return el.status === "ToDo";
-      // });
+      const filtered = this.issues.filter((issue) => issue.status === "ToDo");
       return filtered;
     },
   },

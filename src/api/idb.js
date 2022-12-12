@@ -70,8 +70,6 @@ export default {
     const target = {};
     const newData = Object.assign(target, data);
 
-    console.log(newData, "check");
-
     let db = await this.getDb();
 
     return new Promise((resolve) => {
@@ -101,6 +99,8 @@ export default {
 
   async clearData() {
     let db = await this.getDb();
-    db.clear();
+    let trans = db.transaction(["todos"], "readwrite");
+    let store = trans.objectStore("todos");
+    store.clear();
   },
 };

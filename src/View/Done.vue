@@ -41,10 +41,7 @@ export default {
   methods: {
     //현재 상태에 해당하는 데이터 추출
     todofilter() {
-      let filtered = this.issues.filter((el) => {
-        return el.status === "Done";
-      });
-
+      const filtered = this.issues.filter((issue) => issue.status === "Done");
       return filtered;
     },
 

@@ -34,14 +34,12 @@ export default createStore({
     editData(state, data) {
       //!정렬 : Status에 따라 분기를 나눠서 다르게 정렬
       //*아이디가 일치하는 이슈 찾기
-      const findItem = state.issues.find((el) => {
-        return el.id === data.id;
-      });
+      const findItem = state.issues.find((el) => el.id === data.id);
 
       //*데이터 수정시 status의 변동여부 체크, 같으면 true, 다르면 false
       const compareStatus = () => {
         if (findItem.status === data.status) return true;
-        else return false;
+        return false;
       };
 
       //*수정하려는 이슈의 인데스 뽑아내기
@@ -74,14 +72,14 @@ export default createStore({
     /** 데이터 이동함수 */
     moveData(state, data) {
       //*현재 데이터
-      const currentData = state.issues.find((el) => {
-        return el.id === Number(data.currentId);
-      });
+      const currentData = state.issues.find(
+        (el) => el.id === Number(data.currentId)
+      );
 
       //*이동하고 싶은 쪽 데이터
-      const movingTargetData = state.issues.find((el) => {
-        return el.id === Number(data.movingTargetId);
-      });
+      const movingTargetData = state.issues.find(
+        (el) => el.id === Number(data.movingTargetId)
+      );
 
       //*현재 데이터 제거
       const filtered = state.issues
@@ -98,7 +96,6 @@ export default createStore({
       filtered.sort((a, b) => a.id - b.id);
 
       //*데이터 업데이트
-      // filtered.forEach((issue) => idb.editData(issue));
       state.issues = filtered;
     },
 
@@ -115,7 +112,13 @@ export default createStore({
       //*기존데이터 업데이트
       idb.deleteData(data);
       state.issues = filtered;
-      alert("삭제완료!");
+    },
+
+    /** 데이터 전체 삭제 */
+    clearData() {
+      idb.clearData();
+      //todo 새로고침 말고 다른 방법 고민
+      window.location.reload();
     },
   },
   actions: {},
