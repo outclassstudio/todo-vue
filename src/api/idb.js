@@ -45,7 +45,22 @@ export default {
     return new Promise((resolve) => {
       let trans = db.transaction(["todos"], "readonly");
       let store = trans.objectStore("todos");
-      resolve(store.getAll());
+      let data = store.getAll();
+      data.onsuccess = (e) => resolve(e.target.result);
+    });
+  },
+
+  async getOneData(id) {
+    console.log("check id", id);
+    let db = await this.getDb();
+
+    return new Promise((resolve) => {
+      let trans = db.transaction(["todos"]);
+      let store = trans.objectStore("todos");
+      let data = store.get(Number(id));
+      data.onsuccess = (e) => {
+        resolve(e.target.result);
+      };
     });
   },
 

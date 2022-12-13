@@ -2,20 +2,20 @@
   <div class="modal-bg">
     <div class="modal-content" v-if="editMode">
       <router-link to="/"
-        ><div class="modal-header">홈으로 돌아가기</div></router-link
+        ><div class="modal-header">🎯홈으로 돌아가기</div></router-link
       >
       <div class="content-box">
         <div class="content-title">제목</div>
-        <div class="title-content view">{{ singleIssue[0].title }}</div>
+        <div class="title-content view">{{ singleIssue.title }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">진행상태</div>
-        <div class="title-content view">{{ singleIssue[0].status }}</div>
+        <div class="title-content view">{{ singleIssue.status }}</div>
       </div>
       <div class="content-box">
         <div class="content-title">To-Do 내용</div>
         <div class="title-content-large view">
-          {{ singleIssue[0].todo }}
+          {{ singleIssue.todo }}
         </div>
       </div>
       <div
@@ -24,18 +24,18 @@
       >
         <div class="content-title">Progress 내용</div>
         <div class="title-content-large view">
-          {{ singleIssue[0].progress }}
+          {{ singleIssue.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
         <div class="content-title">Done 내용</div>
         <div class="title-content-large view">
-          {{ singleIssue[0].done }}
+          {{ singleIssue.done }}
         </div>
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content view">{{ singleIssue[0].updatedDate }}</div>
+        <div class="title-content view">{{ singleIssue.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
         <div class="modal-btn back-btn" @click="goBack">뒤로가기</div>
@@ -44,7 +44,7 @@
     </div>
     <div class="modal-content" v-else>
       <router-link to="/"
-        ><div class="modal-header">홈으로 돌아가기</div></router-link
+        ><div class="modal-header">🎯홈으로 돌아가기</div></router-link
       >
       <div class="content-box">
         <div class="content-title">제목</div>
@@ -66,7 +66,7 @@
           v-if="baseData.status === 'ToDo'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'ToDo'">
-          {{ singleIssue[0].todo }}
+          {{ singleIssue.todo }}
         </div>
       </div>
       <div
@@ -80,7 +80,7 @@
           v-if="baseData.status === 'Progress'"
         />
         <div class="title-content-large" v-if="baseData.status !== 'Progress'">
-          {{ singleIssue[0].progress }}
+          {{ singleIssue.progress }}
         </div>
       </div>
       <div class="content-box" v-if="baseData.status === 'Done'">
@@ -89,7 +89,7 @@
       </div>
       <div class="content-box">
         <div class="content-title">최종수정시간</div>
-        <div class="title-content">{{ singleIssue[0].updatedDate }}</div>
+        <div class="title-content">{{ singleIssue.updatedDate }}</div>
       </div>
       <div class="btn-wrapper">
         <div class="modal-btn back-btn" @click="goBack">뒤로가기</div>
@@ -98,12 +98,13 @@
           <div class="modal-btn save-btn" @click="editData">저장</div>
         </div>
       </div>
-      <!-- <div class="error" v-if="errorMsg">변경된 내용이 없습니다.</div> -->
     </div>
   </div>
 </template>
 <script>
 import { makeDate } from "../hooks/date";
+import idb from "../api/idb";
+import Swal from "sweetalert2";
 
 export default {
   name: "Page-View",
@@ -113,43 +114,29 @@ export default {
       editMode: true,
       errorMsg: false,
       baseData: {},
+      singleIssue: {},
     };
   },
 
-  created() {
-    //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
-    //*created와 함께 baseData를 기존 데이터로 업데이트
-    let cloned = JSON.parse(JSON.stringify(this.singleIssue[0]));
+  async created() {
+    let issue = await idb.getOneData(this.$route.params.id);
+    let cloned = {};
+    Object.assign(cloned, issue);
+
     this.baseData = cloned;
+    this.singleIssue = issue;
   },
-
-  computed: {
-    //이슈불러와서 ID로필터링
-    singleIssue() {
-      return this.$store.state.issues.filter((el) => {
-        return el.id === Number(this.$route.params.id);
-      });
-    },
-  },
-
-  props: { todoitem: Array, element: Object },
 
   methods: {
     //수정모드On
     editModeOn() {
-      if (this.baseData.status === "Done") {
-        alert("완료된 이슈는 수정할 수 없습니다");
-      } else {
-        this.editMode = false;
-      }
+      this.editMode = false;
     },
 
     // 수정모드Off
     editModeOff() {
+      this.baseData = { ...this.singleIssue };
       this.editMode = true;
-      //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
-      let status = JSON.parse(JSON.stringify(this.singleIssue[0].status));
-      this.baseData.status = status;
     },
 
     //데이터수정함수
@@ -159,33 +146,31 @@ export default {
       this.baseData.updatedDate = dateString;
 
       // *내용변경 테스트를 위한 키 설정
-      let currentStatus = this.singleIssue[0].status.toLowerCase();
+      let currentStatus = this.singleIssue.status.toLowerCase();
 
       //*제목입력에 대한 점검
       if (this.baseData.title !== "") {
         //*내용변경이 없을 때에 대한 로직
         if (
-          this.singleIssue[0].title === this.baseData.title &&
-          this.singleIssue[0][currentStatus] === this.baseData[currentStatus] &&
-          this.singleIssue[0].status === this.baseData.status
+          this.singleIssue.title === this.baseData.title &&
+          this.singleIssue[currentStatus] === this.baseData[currentStatus] &&
+          this.singleIssue.status === this.baseData.status
         ) {
-          alert("변경된 내용이 없습니다.");
+          Swal.fire({ title: "변경된 내용이 없습니다.", icon: "warning" });
         } else {
           //*Progress에서 Todo로 상태변경시 Progress내용 삭제
-          if (
-            this.singleIssue[0].status === "Progress" &&
-            this.baseData.status === "ToDo"
-          ) {
-            this.baseData.progress = "";
-          }
-
-          //!얕은복사로 인해 state가 의도치 않게 업데이트 되어 깊은복사 로직 추가
-          let updateData = JSON.parse(JSON.stringify(this.baseData));
-          this.$store.commit("editData", updateData);
+          // if (
+          //   this.singleIssue.status === "Progress" &&
+          //   this.baseData.status === "ToDo"
+          // ) {
+          //   this.baseData.progress = "";
+          // }
+          this.singleIssue = { ...this.baseData };
+          this.$store.commit("editData", this.baseData);
           this.editMode = true;
         }
       } else {
-        alert("제목을 입력해주세요");
+        Swal.fire({ title: "제목을 입력해주세요", icon: "warning" });
       }
     },
 
@@ -214,9 +199,10 @@ export default {
   background-color: rgb(250, 250, 250);
   border: 1px soild #bbbbbb;
   border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.8) 0px 10px 10px -15px,
-    rgba(0, 0, 0, 0.8) 0px -10px 10px -15px;
-  width: 600px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px;
+  /* box-shadow: rgba(0, 0, 0, 0.8) 0px 10px 10px -15px,
+    rgba(0, 0, 0, 0.8) 0px -10px 10px -15px; */
+  width: 550px;
   padding: 40px;
   gap: 30px;
 }
