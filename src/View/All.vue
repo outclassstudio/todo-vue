@@ -58,7 +58,7 @@ export default {
         text: "한번 삭제하시면 복구할 수 없어요",
         confirmButtonText: "네!",
         showDenyButton: true,
-        denyButtonText: "아니용",
+        denyButtonText: "안할래요",
       }).then((res) => {
         if (res.isConfirmed) {
           this.$store.commit("clearData");

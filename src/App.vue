@@ -21,8 +21,7 @@ export default {
 
   async created() {
     const data = await idb.getData();
-    data.onsuccess = (e) =>
-      e.target.result.forEach((el) => this.$store.commit("getData", el));
+    data.forEach((issue) => this.$store.commit("getData", issue));
   },
 
   methods: {
